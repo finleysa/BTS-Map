@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'Orbitron-Bold';
+    src: url('../fonts/Orbitron-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Orbitron-Regular';
+    src: url('../fonts/Orbitron-Regular.ttf');
+}
+
+html, body, #map {
+    height: 100%;
+    font: 14px 'Orbitron-Regular', Helvetica, Arial, sans-serif;
+}
+
+a {
+  font-family: 'Orbitron-Regular' !important;
+}
+
+#title{
+  font-family: 'Orbitron-Bold';
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#map { z-index: 1;}
+
+.coordinates{
+  margin: 0 10px;
+  width: 120px;
+}

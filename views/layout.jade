@@ -1,0 +1,56 @@
+doctype html
+html
+  head
+    title WebMap
+    link(rel='stylesheet', href='/stylesheets/vendor/normalize.css')
+    link(rel='stylesheet', href='/stylesheets/vendor/foundation.min.css')
+    link(rel='stylesheet', href='/stylesheets/vendor/leaflet.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    
+  body
+    nav.top-bar(data-topbar, role='navigation')
+        ul.title-area
+          li.name
+            h1
+              a#title(href='/') WebMap
+          // Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone
+          li.toggle-topbar.menu-icon
+            a(href='#')
+              span Menu
+        section.top-bar-section
+          // Right Nav Section
+          ul.right
+            li.active
+              a#coordinates-label(href='#') 
+            li.has-dropdown
+              a(href='#') Map Options
+              ul.dropdown
+                li
+                  a(href='#')
+
+                li#show-bts
+                  a(href='#') Show BTS
+                li
+                  input#show-umts(type="checkbox")
+                  |  UMTS
+                li
+                  input#show-gsm(type="checkbox")
+                  |  GSM
+          // Left Nav Section
+          ul.left
+            li
+              input#center-lat.coordinates(placeholder="Latitude")
+              input#center-lon.coordinates(placeholder="Longitude")
+            li
+              a#center-location.button.small.round(href='#') Center
+
+    block content
+  
+  script(src='/javascripts/vendor/jquery.min.js')
+  script(src='/javascripts/vendor/modernizr.js')
+  script(src='/javascripts/vendor/placeholder.js')
+  script(src='/javascripts/vendor/fastclick.js')
+  script(src='/javascripts/vendor/foundation.min.js')
+  script(src='/javascripts/vendor/leaflet.js')
+  script(src='/javascripts/vendor/numeral.min.js')
+  script(src='/javascripts/map.js')
