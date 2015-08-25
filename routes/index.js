@@ -8,8 +8,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/celltowers', function(req, res, next){
-  console.log(req.query+"!!!")
   Cell.findNearest(req.query, function(records){
+    console.log(records.length);
     res.json('index', {celltowers: records});
   });
 });

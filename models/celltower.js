@@ -29,7 +29,11 @@ Celltower.findNearest = function(q, fn){
     $geoWithin: {
       $geometry: {
         type: 'Polygon',
-        coordinates: [ [ [q.lon1 * 1, q.lat1 * 1 ], [q.lon2 * 1, q.lat2 * 1], [q.lon3 * 1, q.lat3 * 1], [q.lon4 * 1, q.lat4 * 1], [q.lon1 * 1, q.lat1 * 1] ] ] } } } }).toArray(function(err, records){
+        coordinates: [ [ [q.lon1 * 1, q.lat1 * 1 ],
+        [q.lon2 * 1, q.lat2 * 1],
+        [q.lon3 * 1, q.lat3 * 1],
+        [q.lon4 * 1, q.lat4 * 1],
+        [q.lon1 * 1, q.lat1 * 1] ] ] } } } }).toArray(function(err, records){
     fn(records);
   })
 

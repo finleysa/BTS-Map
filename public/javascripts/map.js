@@ -4,12 +4,11 @@
 
   var map = L.map('map', {
       center: [24.444, 54.444],
-      zoom: 12,
-      minzoom: 8
+      zoom: 12
   });
 
   var showbts = false;
-  var markerLayerGroup;
+  var markerLayerGroup = L.layerGroup();
   var showGsm = false;
   var showUmts = false;
 
@@ -18,6 +17,15 @@
     $(document).foundation();
     $('#center-location').click(centerLocation);
     $('#show-bts').click(showBts)
+
+    map.on('mousemove', function(e){
+      var lat = numeral(e.latlng.lat).format('0.00000');
+      var lng = numeral(e.latlng.lng).format('0.00000');
+      $('#coordinates-label').text("Lat: " + lat + " Lng: " + lng );
+    });
+
+    map.on('zoomend', getBts);
+    map.on('dragend', getBts);
   }
 
   function showBts(){
@@ -43,20 +51,25 @@
 
   function getBts(){
     //var url = '/celltowers/?lat='+lat+'&lng='+lng+'&limit='+limitVal
-    var bounds = map.getBounds();
-    var url = '/celltowers?lat1='+bounds.getNorthEast().lat + "&lon1=" + bounds.getNorthEast().lng + "&lat2=" + bounds.getNorthWest().lat + "&lon2=" + bounds.getNorthWest().lng + "&lat3=" + bounds.getSouthWest().lat + "&lon3=" + bounds.getSouthWest().lng + "&lat4=" + bounds.getSouthEast().lat + "&lon4=" + bounds.getSouthEast().lng;
-    $.get(url, function(data){
-      var markerArray = new Array(data.length)
-      for(var i=0; i<data.celltowers.length; i++){
-        var cell = data.celltowers[i];
-        //if (cell.radio == "UMTS" && $('#show-umts').is(':checked'))
-        markerArray[i] = (L.marker([cell.lat, cell.lon]).bindPopup(cell.radio + " " + cell.cell));
-      }
-      markerLayerGroup = L.layerGroup(markerArray).addTo(map);
-    });
+    removeBts();
+    if($('#show-bts').hasClass('active')) {
+      var bounds = map.getBounds();
+      var url = '/celltowers?lat1='+bounds.getNorthEast().lat + "&lon1=" + bounds.getNorthEast().lng + "&lat2=" + bounds.getNorthWest().lat + "&lon2=" + bounds.getNorthWest().lng + "&lat3=" + bounds.getSouthWest().lat + "&lon3=" + bounds.getSouthWest().lng + "&lat4=" + bounds.getSouthEast().lat + "&lon4=" + bounds.getSouthEast().lng;
+      $.get(url, function(data){
+        var markerArray = new Array(data.length)
+        $('#bts-number').text('Num BTS: ' + data.celltowers.length)
+        for(var i=0; i<data.celltowers.length; i++){
+          var cell = data.celltowers[i];
+          //if (cell.radio == "UMTS" && $('#show-umts').is(':checked'))
+          markerArray[i] = (L.marker([cell.lat, cell.lon]).bindPopup(cell.radio + " " + cell.cell));
+        }
+        markerLayerGroup = L.layerGroup(markerArray).addTo(map);
+      });
+    }
   };
 
   function removeBts(){
+    $('#bts-number').text('');
     map.removeLayer(markerLayerGroup);
   }
 
@@ -67,11 +80,6 @@
 	}
 
 	// EVENTS
-	map.on('mousemove', function(e){
-		var lat = numeral(e.latlng.lat).format('0.00000');
-		var lng = numeral(e.latlng.lng).format('0.00000');
-		$('#coordinates-label').text("Lat: " + lat + " Lng: " + lng );
-	});
 
 
 	// lat long validation RegExp
@@ -101,7 +109,5 @@ function pinTheMap(data){
 	markerLayerGroup = L.layerGroup(markerArray).addTo(map);
 }
 
-map.on('dragend', getPins);
-map.on('zoomend', getPins);
 map.whenReady(getPins)
 */
