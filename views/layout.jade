@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title WebMap
+    title BTS Map
     link(rel='stylesheet', href='/stylesheets/vendor/normalize.css')
     link(rel='stylesheet', href='/stylesheets/vendor/foundation.min.css')
     link(rel='stylesheet', href='/stylesheets/vendor/leaflet.css')
@@ -12,7 +12,7 @@ html
         ul.title-area
           li.name
             h1
-              a#title(href='/') WebMap
+              a#title(href='/') BTS Map
           // Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone
           li.toggle-topbar.menu-icon
             a(href='#')
@@ -32,11 +32,7 @@ html
                 li#show-bts
                   a(href='#') Show BTS
                 li
-                  input#show-umts(type="checkbox")
-                  |  UMTS
-                li
-                  input#show-gsm(type="checkbox")
-                  |  GSM
+                  a(href="#", data-reveal-id="myModal") TEST
           // Left Nav Section
           ul.left
             li
@@ -44,6 +40,28 @@ html
               input#center-lon.coordinates(placeholder="Longitude")
             li
               a#center-location.button.small.round(href='#') Center
+      .row
+        .medium-4.columns
+          #myModal.reveal-modal(data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog")    
+            form(action='/filter', method='post')
+              fieldset
+                legend BTS Filter Options
+                .row
+                  .small-8.columns.center
+                    label Radio
+                    select(name="radio")
+                      option None
+                      option GSM
+                      option CDMA
+                      option UTMS        
+                    label MCC
+                    input(type="text", name="mcc")
+                    label Net
+                    input(type="text", name="net")
+                    label Cell ID
+                    input(type="text", name="cell")
+                    button.small.round Filter
+            a.close-reveal-modal(aria-label="Close") &#215
 
     block content
   

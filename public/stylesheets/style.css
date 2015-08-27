@@ -13,7 +13,7 @@ html, body, #map {
     font: 14px 'Orbitron-Regular', Helvetica, Arial, sans-serif;
 }
 
-a {
+a, button {
   font-family: 'Orbitron-Regular' !important;
 }
 

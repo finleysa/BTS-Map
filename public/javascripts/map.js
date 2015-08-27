@@ -42,11 +42,9 @@
   }
 
 	function initMap(){
-		var markerLayerGroup = L.layerGroup().addTo(map);
 		L.tileLayer('maps/tiles/{z0}/{x0}/{x1}/{y0}/{y1}.png').addTo(map); //gMapCatcher
     $('.leaflet-control-zoom').remove();
 		//L.tileLayer('maps/tiles/{z}/{x}/{y}.png').addTo(map);
-
 	}
 
   function getBts(){
@@ -61,7 +59,12 @@
         for(var i=0; i<data.celltowers.length; i++){
           var cell = data.celltowers[i];
           //if (cell.radio == "UMTS" && $('#show-umts').is(':checked'))
-          markerArray[i] = (L.marker([cell.lat, cell.lon]).bindPopup(cell.radio + " " + cell.cell));
+          var text = "Radio: " + cell.radio + "</br>" +
+                     "Cell: " + cell.cell+ "</br>" +
+                     "MCC: " + cell.mcc + "</br>" +
+                     "Net: " + cell.net + "</br>" +
+                     "Range(km): " +cell.range;
+          markerArray[i] = (L.marker([cell.lat, cell.lon]).bindPopup(text));
         }
         markerLayerGroup = L.layerGroup(markerArray).addTo(map);
       });
