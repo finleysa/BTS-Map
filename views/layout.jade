@@ -1,75 +1,72 @@
 doctype html
 html
   head
-    title BTS Map
+    title WebMap
     link(rel='stylesheet', href='/stylesheets/vendor/normalize.css')
-    link(rel='stylesheet', href='/stylesheets/vendor/foundation.min.css')
-    link(rel='stylesheet', href='/stylesheets/vendor/leaflet.css')
+    link(rel='stylesheet', href='/stylesheets/vendor/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/vendor/bootstrap-theme.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/vendor/leaflet.css')
+    link(rel='stylesheet', href='/stylesheets/vendor/leaflet.draw.css')
     
   body
-    nav.top-bar(data-topbar, role='navigation')
-        ul.title-area
-          li.name
-            h1
-              a#title(href='/') BTS Map
-          // Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone
-          li.toggle-topbar.menu-icon
-            a(href='#')
-              span Menu
-        section.top-bar-section
-          // Right Nav Section
-          ul.right
-            li.active
-              a#coordinates-label(href='#')
-            li.active
-              a#bts-number
-            li.has-dropdown
-              a(href='#') Map Options
-              ul.dropdown
-                li
-                  a(href='#')
-                li#show-bts
-                  a(href='#') Show BTS
-                li
-                  a(href="#", data-reveal-id="myModal") TEST
-          // Left Nav Section
-          ul.left
-            li
-              input#center-lat.coordinates(placeholder="Latitude")
-              input#center-lon.coordinates(placeholder="Longitude")
-            li
-              a#center-location.button.small.round(href='#') Center
-      .row
-        .medium-4.columns
-          #myModal.reveal-modal(data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog")    
-            form(action='/filter', method='post')
-              fieldset
-                legend BTS Filter Options
-                .row
-                  .small-8.columns.center
-                    label Radio
-                    select(name="radio")
-                      option None
-                      option GSM
-                      option CDMA
-                      option UTMS        
-                    label MCC
-                    input(type="text", name="mcc")
-                    label Net
-                    input(type="text", name="net")
-                    label Cell ID
-                    input(type="text", name="cell")
-                    button.small.round Filter
-            a.close-reveal-modal(aria-label="Close") &#215
-
+    #wrapper
+      #top-bar
+        .row
+          .col-sm-12
+            // TOP BAR NAVIGATION
+            nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+              .container-fluid
+                .navbar-header
+                  a.navbar-brand WebMap
+              .collapse.navbar-collapse
+                .nav.navbar-nav
+              // SIDE NAVIGATION
+              .collapse.navbar-collapse
+                ul.nav.navbar-nav.side-nav
+                  li#gps.bad-gps
+                    a(href='#') GPS
+                  li#show-bts
+                    a(href='#') Show BTS
+                  li
+                    a(href='javascript:;', data-toggle='collapse', data-target='#center')
+                      i.fa.fa-fw.fa-arrows-v
+                      |  Center Location 
+                      i.fa.fa-fw.fa-caret-down
+                    ul#center.collapse
+                      li
+                        ul
+                          li
+                            input#center-lat.coordinates(placeholder="Latitude")
+                          li
+                            input#center-lon.coordinates(placeholder="Longitude")
+                          li
+                            button.btn.btn-info.navbar-btn#center-location Center
+                  li
+                    a(href='javascript:;', data-toggle='collapse', data-target='#drop-marker')
+                      i.fa.fa-fw.fa-arrows-v
+                      |  Drop Marker
+                      i.fa.fa-fw.fa-caret-down
+                    ul#drop-marker.collapse
+                      li
+                        ul
+                          li
+                            input#marker-lat.coordinates(placeholder="Latitude")
+                          li
+                            input#marker-lon.coordinates(placeholder="Longitude")
+                          li
+                            button.btn.btn-info.navbar-btn#marker-location Drop
+                        
+            
     block content
   
-  script(src='/javascripts/vendor/jquery.min.js')
-  script(src='/javascripts/vendor/modernizr.js')
-  script(src='/javascripts/vendor/placeholder.js')
-  script(src='/javascripts/vendor/fastclick.js')
-  script(src='/javascripts/vendor/foundation.min.js')
-  script(src='/javascripts/vendor/leaflet.js')
-  script(src='/javascripts/vendor/numeral.min.js')
-  script(src='/javascripts/map.js')
+    script(src='/javascripts/vendor/jquery.min.js')
+    script(src='/javascripts/vendor/modernizr.js')
+    script(src='/javascripts/vendor/placeholder.js')
+    script(src='/javascripts/vendor/fastclick.js')
+    script(src='/javascripts/vendor/bootstrap.js')
+    script(src='/javascripts/vendor/leaflet.js')
+    script(src='/javascripts/vendor/leaflet.draw.js')
+    script(src='/javascripts/vendor/numeral.min.js')
+    script(src='/javascripts/vendor/socket.io.js')
+    script(src='/javascripts/map.js')

@@ -4,8 +4,8 @@
 
   var map = L.map('map', {
       center: [24.444, 54.444],
-      zoom: 12
-      });
+      zoom: 12,
+  });
 
   var markerLayerGroup = L.layerGroup();
   var socket = io();
@@ -14,19 +14,12 @@
   var showGsm = false;
   var showUmts = false;
 
-  var planeIcon = L.icon({
-      iconUrl: '../images/plane.png',
-
-      iconSize:     [28, 28], // size of the icon
-      iconAnchor:   [14, 14], // point of the icon which will correspond to marker's location
-      popupAnchor:  [-14, -14] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var aircraftMarker = L.marker([0, 0], {icon: planeIcon}).addTo(map)
+  var aircraftMarker = L.marker([0, 0]).addTo(map)
 
   var Aircraft = {
     latitude: '',
     longitude: '',
+    marker: aircraftMarker
   }
 
   function initialize(){
@@ -60,6 +53,8 @@
 
   function initMap() {
 		L.tileLayer('maps/tiles/{z0}/{x0}/{x1}/{y0}/{y1}.png').addTo(map); //gMapCatcher
+
+    //$('.leaflet-control-zoom').remove();
 	}
 
   function initDraw() {
@@ -71,6 +66,7 @@
             featureGroup: drawnItems
         }
     });
+
     map.addControl(drawControl);
 
     map.on('draw:created', function (e) {
@@ -83,7 +79,7 @@
   function gpsRecieved(sentence) {
     if (sentence.lat != "" || sentence.lon !=""){
 
-      var coordinates = dgmToDd(sentence.lat, sentence.lon);
+      var coordinates = dgmsToDd(sentence.lat, sentence.lon);
 
       Aircraft.latitude = coordinates.lat;
       Aircraft.longitude = coordinates.lon;
@@ -97,12 +93,10 @@
        $('#gps').addClass('bad-gps');
      }
 
-      $('#plane-location').text("LAT: " + Aircraft.lat + " LON: " + Aircraft.lon);
+     var lat = numeral(Aircraft.latitude).format('0.00000');
+     var lon = numeral(Aircraft.longitude).format('0.00000');
+      $('#plane-location').text("LAT: " + lat + " LON: " + lon);
     }
-    console.log(Aircraft.latitude);
-    console.log(Aircraft.longitude);
-
-    console.log(sentence);
   }
 
   function showBts() {
@@ -152,19 +146,18 @@
 		map.panTo({lat,lng})
 	}
 
-  function dgmToDd(lat, lon) {
+  function dgmsToDd(lat, lon) {
+    //2425.23456
     var degrees = lat.slice(0,2) * 1;
-    var minutes = lat.slice(2,2) / 60;
-    var seconds = lat.slice(4,5) / 3600;
+    var minutes = (lat.slice(2,10)) / 60 * 1;
 
-    var latitude = numeral(degrees + minutes + seconds).format('0.00000');
+    var latitude = degrees + minutes;
 
-    degrees = lat.slice(0,3) * 1;
-    minutes = lat.slice(3,2) / 60;
-    seconds = lat.slice(5,5) / 3600;
+    degrees = lon.slice(0,3) * 1;
+    minutes = (lon.slice(3,11)) / 60 * 1;
 
-    var longitude = numeral(degrees + minutes + seconds).format('0.00000');
+    var longitude = degrees + minutes;
 
-    return {lat: longitude, lon: latitude};
+    return {lat: latitude, lon: longitude};
   }
 })();

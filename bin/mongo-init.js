@@ -17,7 +17,7 @@ exports.db = function(fn){
     assert.equal(null, err);
     global.webmap = {};
     global.webmap.db = db;
-    console.log("Connected correctly to server");
+    console.log("Connected correctly to Mongo");
     fn();
   });
 };

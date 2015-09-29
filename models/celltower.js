@@ -22,7 +22,7 @@ function Celltower(cell){
   this.coordinates = [cell.lon, cell.lat];
 }
 
-Celltower.findNearest = function(q, fn){
+Celltower.findNearest = function(q, callback){
   var celltowers = global.webmap.db.collection('celltowers');
   celltowers.find({'geometry': {
     $geoWithin: {
@@ -32,19 +32,27 @@ Celltower.findNearest = function(q, fn){
         [q.lon2 * 1, q.lat2 * 1],
         [q.lon3 * 1, q.lat3 * 1],
         [q.lon4 * 1, q.lat4 * 1],
-        [q.lon1 * 1, q.lat1 * 1] ] ] } } } }).limit(1000).toArray(function(err, records){
-    fn(records);
+        [q.lon1 * 1, q.lat1 * 1] ] ] } } } }).toArray(function(err, records){
+    callback(records);
   });
 };
 
 Celltower.filterBts = function(body, fn){
   var celltowers = global.webmap.db.collection('celltowers');
+    celltowers.find(body, function(err, docs){
+      console.log("docs: " + docs);
+    });
+  /*celltowers.find({'geometry': { $near: { $geometry: { type: "Point", coordinates: [54.444, 24.444] }, $maxDistance: 80000 } } }).toArray(function(err, records){
+  fn(records);
+  });
+  */
+};
+
+/*
   celltowers.find({radio:body.radio}).toArray(function(err, records){
     if(err)
       console.log(err);
     console.log(records);
   });
 };
-  //celltowers.find({'geometry': { $near: { $geometry: { type: "Point", coordinates: [54.444, 24.444] }, $maxDistance: 80000 } } }).toArray(function(err, records){
-  //  fn(records);
-  //});
+*/

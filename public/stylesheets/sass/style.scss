@@ -1,4 +1,10 @@
 @import url(http://fonts.googleapis.com/css?family=Ubuntu);
+$lightBlue: #1986FF;
+$mediumBlue: #0078FF;
+$darkBlue: #0054B2;
+$tan: #FFEECF;
+$brown: #B27200;
+
 body {
   position: absolute;
   top: 0;
@@ -10,46 +16,58 @@ body {
   background-color: #315481;
   background-image: linear-gradient(to bottom, #315481, #918e82 100%);
   background-repeat: no-repeat;
-  background-attachment: fixed; }
+  background-attachment: fixed;
+  }
 
-h1, h2, h3, h4, h5, p, body, a {
-  font-family: 'Ubuntu', serif; }
+h1,h2,h3,h4,h5,p,body,a {
+  font-family: 'Ubuntu', serif;
+}
 
 a {
-  color: #1986FF; }
+  color: $lightBlue;
+}
 
 div {
-  display: block; }
+  display: block;
+}
 
 table {
-  margin: 10px 0; }
-  table thead {
-    color: #FFEECF; }
-  table tbody {
-    color: #FFEECF; }
-  table button {
-    background: #B27200; }
+  margin: 10px 0;
+  thead{
+    color: $tan;
+  }
+  tbody{
+    color: $tan;
+  }
+  button{
+    background: $brown;
+  }
+}
 
 #map {
   position: static;
   z-index: 1;
   height: 100%;
-  left: 175px; }
+  left: 175px;
+}
 
 #top-bar {
-  height: 50px; }
+  height: 50px;
+}
 
-#cursor-location {
+#cursor-location{
   color: red;
   font-weight: bold;
   font-size: 16px;
   z-index: 3;
   position: fixed;
   bottom: 25px;
-  left: 200px; }
+  left: 200px;
+}
 
 #center-location, #marker-location {
-  margin-left: 10px; }
+  margin-left: 10px;
+}
 
 #plane-location {
   bottom: 25px;
@@ -58,25 +76,35 @@ table {
   font-weight: bold;
   font-size: 16px;
   z-index: 3;
-  position: fixed; }
+  position: fixed;
+}
 
 .full-width {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: initial; }
+   width: 100%;
+   margin-left: auto;
+   margin-right: auto;
+   max-width: initial;
+}
 
-@media (min-width: 768px) {
+@media(min-width:768px) {
   #wrapper {
-    padding-left: 175px; }
+      padding-left: 175px;
+  }
+
   #page-wrapper {
     margin-top: 75px;
     width: 100%;
-    display: block; }
+    display: block;
+  }
+
   .good-gps {
-    background-color: green; }
+    background-color: green;
+  }
+
   .bad-gps {
-    background-color: red; }
+    background-color: red;
+  }
+
   .side-nav {
     position: fixed;
     top: 50px;
@@ -90,16 +118,26 @@ table {
     bottom: 0;
     overflow-x: hidden;
     padding-bottom: 40px;
-    opacity: .55; }
-    .side-nav li {
-      width: 175px; }
-      .side-nav li a:hover,
-      .side-nav li a:focus {
+    opacity: .55;
+
+    li {
+      width: 175px;
+      a:hover,
+      a:focus {
         outline: none;
-        background-color: #101010 !important; }
-    .side-nav ul {
-      padding: 0; }
-      .side-nav ul li a {
-        display: block;
-        padding: 10px 15px 10px 38px;
-        text-decoration: none; } }
+        background-color: #101010 !important;
+        }
+      }
+
+      ul {
+        padding: 0;
+        li {
+          a {
+            display: block;
+            padding: 10px 15px 10px 38px;
+            text-decoration: none;
+          }
+      }
+    }
+  }
+}
