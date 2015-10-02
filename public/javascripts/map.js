@@ -97,7 +97,9 @@
        $('#gps').addClass('bad-gps');
      }
 
-      $('#plane-location').text("LAT: " + Aircraft.lat + " LON: " + Aircraft.lon);
+     var lat = numeral(Aircraft.latitude).format('0.00000');
+     var lon = numeral(Aircraft.longitude).format('0.00000');
+      $('#plane-location').text("LAT: " + lat + " LON: " + lon);
     }
     console.log(Aircraft.latitude);
     console.log(Aircraft.longitude);
@@ -154,17 +156,15 @@
 
   function dgmToDd(lat, lon) {
     var degrees = lat.slice(0,2) * 1;
-    var minutes = lat.slice(2,2) / 60;
-    var seconds = lat.slice(4,5) / 3600;
+    var minutes = lat.slice(2,10) / 60;
 
-    var latitude = numeral(degrees + minutes + seconds).format('0.00000');
+    var latitude = degrees + minutes;
 
-    degrees = lat.slice(0,3) * 1;
-    minutes = lat.slice(3,2) / 60;
-    seconds = lat.slice(5,5) / 3600;
+    degrees = lon.slice(0,3) * 1;
+    minutes = lon.slice(3,11) / 60;
 
-    var longitude = numeral(degrees + minutes + seconds).format('0.00000');
+    var longitude = degrees + minutes;
 
-    return {lat: longitude, lon: latitude};
+    return {lat: latitude, lon: longitude};
   }
 })();
