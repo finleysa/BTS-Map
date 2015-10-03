@@ -29,8 +29,7 @@ exports.GetLayers = function(){
       console.log('Error removing Layers');
     }
     else {
-      console.log('Emitting GeoJSON layers');
-      console.log(records);
+      console.log('Emitting GeoJSON layers: ' + records.length);
       socket.emit('AllLayers', records);
     }
   })

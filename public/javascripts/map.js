@@ -9,8 +9,13 @@
 
   var markerLayerGroup = L.layerGroup();
   var leafletLayerGroup = L.layerGroup().addTo(map);
+  var breadCrumbGroup = L.layerGroup().addTo(map);
+
   var geoJSONLayer = L.geoJson().addTo(map);
   var socket = io();
+
+  var crumbTimer;
+  var crumbArray = [];
 
   var showbts = false;
   var showGsm = false;
@@ -23,6 +28,12 @@
       iconAnchor:   [14, 14], // point of the icon which will correspond to marker's location
       popupAnchor:  [-14, -14] // point from which the popup should open relative to the iconAnchor
   });
+
+  var crumbIcon = L.icon({
+    iconUrl: '../images/breadcrumb.png',
+    iconSize:     [8, 8],
+    iconAnchor:   [4,4]
+  })
 
   var aircraftMarker = L.marker([0, 0], {icon: planeIcon}).addTo(map)
 
@@ -39,6 +50,7 @@
     socket.on('AllLayers', layersReceived);
 
     $('#center-location').click(centerLocation);
+    $('#marker-location').click(addMarker);
     $('#show-bts').click(showBts);
     $('#remove-layers').click(removeLayers);
 
@@ -85,10 +97,12 @@
     map.on('draw:created', function (e) {
         var type = e.layerType,
             layer = e.layer;
+        console.log(e.target);
+        if(type == 'marker')
+          layer.bindPopup('LAT: ' + e.layer._latlng.lat +'<br>LON: '+ e.layer._latlng.lng);
+
         drawnItems.addLayer(layer);
     });
-
-
   };
 
   function mapObjectAdded(e){
@@ -98,8 +112,6 @@
     if(layer.properties.layerType == 'circle'){
       layer.properties.radius = e.layer._mRadius
     }
-
-    console.log(layer.properties.radius);
 
     try {
       socket.emit('LayerAdded', layer)
@@ -159,6 +171,8 @@
      var lat = numeral(Aircraft.latitude).format('0.00000');
      var lon = numeral(Aircraft.longitude).format('0.00000');
       $('#plane-location').text(lat + " " + lon);
+
+      crumbTimer = setInterval(layCrumb, 1000)
     }
   }
 
@@ -208,6 +222,23 @@
 		var lng = $('#center-lon').val();
 		map.panTo({lat,lng})
 	}
+
+  function addMarker() {
+    var lat = $('#marker-lat').val();
+    var lng = $('#marker-lon').val();
+    console.log(lat+' '+lng)
+    leafletLayerGroup.addLayer(new L.Marker(L.latLng({lat: lat, lng: lng})));
+  }
+
+  function layCrumb(){
+    if(crumbArray.length > 10){
+      map.removeLayer(crumbArray[9]);
+      crumbArray.pop();
+    }
+    var position = new L.Marker(L.latLng({lat: Aircraft.latitude, lng: Aircraft.Longitude}), {icon: crumbIcon});
+    crumbArray.push(position);
+    map.addLayer(position);
+  }
 
   function dgmToDd(lat, lon) {
     var degrees = lat.slice(0,2) * 1;
