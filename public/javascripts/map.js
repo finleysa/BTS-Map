@@ -3,13 +3,13 @@
   $(document).ready(initialize);
 
   var map = L.map('map', {
-      center: [24.444, 54.444],
-      zoom: 12
+      center: [24.4, 54.56],
+      zoom: 11
       });
 
   var markerLayerGroup = L.layerGroup();
   var leafletLayerGroup = L.layerGroup().addTo(map);
-  var breadCrumbGroup = L.layerGroup().addTo(map);
+  //var breadCrumbGroup = L.layerGroup().addTo(map);
 
   var geoJSONLayer = L.geoJson().addTo(map);
   var socket = io();
@@ -35,18 +35,20 @@
     iconAnchor:   [4,4]
   })
 
-  var aircraftMarker = L.marker([0, 0], {icon: planeIcon}).addTo(map)
+  var aircraftMarker = L.rotatedMarker([0, 0], {icon: planeIcon}).addTo(map)
 
   var Aircraft = {
-    latitude: '',
-    longitude: '',
+    latitude: 0,
+    longitude: 0,
+    heading: 0
   }
 
   function initialize(){
 		initMap();
     initDraw();
 
-    socket.on('GPS', gpsRecieved);
+    socket.on('GPS', gpsReceived);
+    socket.on('VTG', vtgReceived);
     socket.on('AllLayers', layersReceived);
 
     $('#center-location').click(centerLocation);
@@ -97,12 +99,20 @@
     map.on('draw:created', function (e) {
         var type = e.layerType,
             layer = e.layer;
-        console.log(e.target);
+            socket.on('LayerID', function(id){
+            });
+
         if(type == 'marker')
           layer.bindPopup('LAT: ' + e.layer._latlng.lat +'<br>LON: '+ e.layer._latlng.lng);
 
         drawnItems.addLayer(layer);
+
     });
+
+    map.on('draw:deleted', function (e) {
+      console.log(e);
+    });
+
   };
 
   function mapObjectAdded(e){
@@ -127,8 +137,8 @@
 
         var lat = layer[i].data.geometry.coordinates[1];
         var lon = layer[i].data.geometry.coordinates[0];
-
-        var circle = L.circle([lat, lon], layer[i].data.properties.radius);
+        var radius = layer[i].data.properties.radius;
+        var circle = L.circle([lat, lon], radius);
         leafletLayerGroup.addLayer(circle);
       }
       else
@@ -151,7 +161,7 @@
     }
   }
 
-  function gpsRecieved(sentence) {
+  function gpsReceived(sentence) {
     if (sentence.lat != "" || sentence.lon !=""){
 
       var coordinates = dgmToDd(sentence.lat, sentence.lon);
@@ -174,6 +184,12 @@
 
       crumbTimer = setInterval(layCrumb, 1000)
     }
+  }
+
+  function vtgReceived(sentence){
+    console.log(sentence);
+    //aircraftMarker.setAngle(50);
+
   }
 
   function showBts() {

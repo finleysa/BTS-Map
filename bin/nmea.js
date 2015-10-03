@@ -25,7 +25,8 @@ exports.gps = function(fn){
         var line = nmea.parse(line);
         if(global.socket && line.sentence == "GGA")
           socket.emit("GPS", line);
-
+        if(global.socket && line.sentence == "VTG")
+          socket.emit("VTG", line);
       });
     } else {
       initialized = false;

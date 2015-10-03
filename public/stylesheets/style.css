@@ -46,7 +46,7 @@ table {
   bottom: 25px; }
 
 #center-location, #marker-location {
-  margin-left: 10px; }
+  width: 100%; }
 
 #plane-location {
   bottom: 25px;

@@ -2,12 +2,12 @@ var MapLayer = require('../models/mapLayer')
 
 exports.Insert = function(data){
   var newLayer = new MapLayer(data);
-  newLayer.insert(function(err){
+  newLayer.insert(function(err, record){
     if(err) {
       console.log('Layer error');
     }
     else {
-        console.log('Layer added');
+      socket.emit('LayerID', newLayer._id);
     }
   });
 }
