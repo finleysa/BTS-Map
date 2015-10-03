@@ -8,6 +8,7 @@
       });
 
   var markerLayerGroup = L.layerGroup();
+  var leafletLayerGroup = L.layerGroup().addTo(map);
   var geoJSONLayer = L.geoJson().addTo(map);
   var socket = io();
 
@@ -91,20 +92,37 @@
   };
 
   function mapObjectAdded(e){
-    var test = e.layer.toGeoJSON();
+    var layer = e.layer.toGeoJSON();
+    layer.properties.layerType = e.layerType;
+
+    if(layer.properties.layerType == 'circle'){
+      layer.properties.radius = e.layer._mRadius
+    }
+
+    console.log(layer.properties.radius);
 
     try {
-      socket.emit('LayerAdded', test)
+      socket.emit('LayerAdded', layer)
     }
     catch(err) {
       console.log(err);
     }
   }
 
-  function layersReceived(data){
-    console.log(data.data);
-    for(var i=0; i< data.length; i++){
-      geoJSONLayer.addData(data[i].data);
+  function layersReceived(layer){
+    for(var i=0; i< layer.length; i++) {
+      if(layer[i].data.properties.layerType == 'circle'){
+
+        var lat = layer[i].data.geometry.coordinates[1];
+        var lon = layer[i].data.geometry.coordinates[0];
+
+        var circle = L.circle([lat, lon], layer[i].data.properties.radius);
+        leafletLayerGroup.addLayer(circle);
+      }
+      else
+      {
+        geoJSONLayer.addData(layer[i].data);
+      }
     }
   }
 
@@ -112,6 +130,7 @@
     try {
       socket.emit('RemoveLayers');
       map.removeLayer(markerLayerGroup);
+      map.removeLayer(leafletLayerGroup);
       map.removeLayer(geoJSONLayer);
 
     }
