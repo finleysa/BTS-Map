@@ -33,8 +33,15 @@ server.on('listening', onListening);
 
 io.on('connection', function(socket){
   console.log('a user connected');
+
+  socket.on('LayerAdded', function(data){
+    console.log(data);
+  })
+
   global.socket = socket;
 });
+
+
 /**
  * Normalize a port into a number, string, or false.
  */

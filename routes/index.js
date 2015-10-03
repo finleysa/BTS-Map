@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var io = require('socket.io')();
 var Cell = require('../models/celltower');
+var MapLayer = require('../models/mapLayer');
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -19,5 +22,9 @@ router.post('/filter', function(req, res, next){
 
   })
 })
+
+// Sockets
+
+
 
 module.exports = router;

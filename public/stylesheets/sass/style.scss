@@ -47,7 +47,6 @@ table {
 #map {
   position: static;
   height: 100%;
-  left: 175px;
 }
 
 #top-bar {
@@ -61,7 +60,6 @@ table {
   z-index: 3;
   position: fixed;
   bottom: 25px;
-  left: 200px;
 }
 
 #center-location, #marker-location {
@@ -85,7 +83,18 @@ table {
    max-width: initial;
 }
 
+@media(max-width:768px) {
+  #cursor-location {
+    right: 50px;
+    bottom: 50px;
+  }
+}
+
 @media(min-width:768px) {
+  #map {
+    left: 175px;
+  }
+
   #wrapper {
       padding-left: 175px;
   }
@@ -94,6 +103,10 @@ table {
     margin-top: 75px;
     width: 100%;
     display: block;
+  }
+
+  #cursor-location {
+    left: 200px;
   }
 
   .good-gps {

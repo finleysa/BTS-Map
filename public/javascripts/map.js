@@ -39,11 +39,14 @@
     map.on('mousemove', function(e) {
       var lat = numeral(e.latlng.lat).format('0.00000');
       var lng = numeral(e.latlng.lng).format('0.00000');
-      $('#cursor-location').text("LAT: " + lat + " LON: " + lng );
+      $('#cursor-location').text(lat + " " + lng );
     });
 
+    // MAP EVENTS
+    map.on('draw:created', mapObjectAdded)
     map.on('zoomend', getBts);
     map.on('dragend', getBts);
+    // END MAP EVENTS
 
 /*
     if (document.addEventListener) {
@@ -80,6 +83,11 @@
     });
   };
 
+  function mapObjectAdded(e){
+    console.log(e.layer);
+    socket.send('LayerAdded', e)
+  }
+
   function gpsRecieved(sentence) {
     if (sentence.lat != "" || sentence.lon !=""){
 
@@ -99,12 +107,8 @@
 
      var lat = numeral(Aircraft.latitude).format('0.00000');
      var lon = numeral(Aircraft.longitude).format('0.00000');
-      $('#plane-location').text("LAT: " + lat + " LON: " + lon);
+      $('#plane-location').text(lat + " " + lon);
     }
-    console.log(Aircraft.latitude);
-    console.log(Aircraft.longitude);
-
-    console.log(sentence);
   }
 
   function showBts() {

@@ -32,8 +32,7 @@ table {
 
 #map {
   position: static;
-  height: 100%;
-  left: 175px; }
+  height: 100%; }
 
 #top-bar {
   height: 50px; }
@@ -44,8 +43,7 @@ table {
   font-size: 16px;
   z-index: 3;
   position: fixed;
-  bottom: 25px;
-  left: 200px; }
+  bottom: 25px; }
 
 #center-location, #marker-location {
   margin-left: 10px; }
@@ -65,13 +63,22 @@ table {
   margin-right: auto;
   max-width: initial; }
 
+@media (max-width: 768px) {
+  #cursor-location {
+    right: 50px;
+    bottom: 50px; } }
+
 @media (min-width: 768px) {
+  #map {
+    left: 175px; }
   #wrapper {
     padding-left: 175px; }
   #page-wrapper {
     margin-top: 75px;
     width: 100%;
     display: block; }
+  #cursor-location {
+    left: 200px; }
   .good-gps {
     background-color: green; }
   .bad-gps {
