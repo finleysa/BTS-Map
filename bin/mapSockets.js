@@ -22,3 +22,16 @@ exports.RemoveLayers = function(){
     }
   })
 }
+
+exports.GetLayers = function(){
+  MapLayer.findAll(function(err, records){
+    if(err) {
+      console.log('Error removing Layers');
+    }
+    else {
+      console.log('Emitting GeoJSON layers');
+      console.log(records);
+      socket.emit('AllLayers', records);
+    }
+  })
+}

@@ -8,6 +8,7 @@
       });
 
   var markerLayerGroup = L.layerGroup();
+  var geoJSONLayer = L.geoJson().addTo(map);
   var socket = io();
 
   var showbts = false;
@@ -32,7 +33,10 @@
   function initialize(){
 		initMap();
     initDraw();
+
     socket.on('GPS', gpsRecieved);
+    socket.on('AllLayers', layersReceived);
+
     $('#center-location').click(centerLocation);
     $('#show-bts').click(showBts);
     $('#remove-layers').click(removeLayers);
@@ -97,9 +101,19 @@
     }
   }
 
+  function layersReceived(data){
+    console.log(data.data);
+    for(var i=0; i< data.length; i++){
+      geoJSONLayer.addData(data[i].data);
+    }
+  }
+
   function removeLayers(){
     try {
-      socket.emit('RemoveLayers')
+      socket.emit('RemoveLayers');
+      map.removeLayer(markerLayerGroup);
+      map.removeLayer(geoJSONLayer);
+
     }
     catch(err) {
       console.log(err);

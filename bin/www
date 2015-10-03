@@ -35,6 +35,7 @@ server.on('listening', onListening);
 
 io.on('connection', function(socket){
   console.log('a user connected');
+  mapSockets.GetLayers();
 
   socket.on('LayerAdded', mapSockets.Insert);
   socket.on('RemoveLayers', mapSockets.RemoveLayers);

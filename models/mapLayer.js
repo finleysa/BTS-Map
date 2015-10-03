@@ -21,5 +21,12 @@ MapLayer.removeLayers = function(fn){
   var mapLayers = global.webmap.db.collection('maplayers');
   mapLayers.remove({}, function(err, records){
     fn(err, records);
-  })
+  });
 }
+
+MapLayer.findAll = function(fn){
+  var mapLayers = global.webmap.db.collection('maplayers');
+  mapLayers.find().toArray(function(err, records){
+    fn(err, records);
+  });
+};
