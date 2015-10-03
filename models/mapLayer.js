@@ -16,3 +16,10 @@ MapLayer.prototype.insert = function(fn){
     fn(err);
   });
 };
+
+MapLayer.removeLayers = function(fn){
+  var mapLayers = global.webmap.db.collection('maplayers');
+  mapLayers.remove({}, function(err, records){
+    fn(err, records);
+  })
+}

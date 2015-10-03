@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('webmap:server');
 var http = require('http');
+var router = require('../routes/index')
+var mapSockets = require('./mapSockets')
 
 /**
  * Get port from environment and store in Express.
@@ -34,9 +36,8 @@ server.on('listening', onListening);
 io.on('connection', function(socket){
   console.log('a user connected');
 
-  socket.on('LayerAdded', function(data){
-    console.log(data);
-  })
+  socket.on('LayerAdded', mapSockets.Insert);
+  socket.on('RemoveLayers', mapSockets.RemoveLayers);
 
   global.socket = socket;
 });

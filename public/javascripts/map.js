@@ -34,7 +34,8 @@
     initDraw();
     socket.on('GPS', gpsRecieved);
     $('#center-location').click(centerLocation);
-    $('#show-bts').click(showBts)
+    $('#show-bts').click(showBts);
+    $('#remove-layers').click(removeLayers);
 
     map.on('mousemove', function(e) {
       var lat = numeral(e.latlng.lat).format('0.00000');
@@ -81,11 +82,28 @@
             layer = e.layer;
         drawnItems.addLayer(layer);
     });
+
+
   };
 
   function mapObjectAdded(e){
-    console.log(e.layer);
-    socket.send('LayerAdded', e)
+    var test = e.layer.toGeoJSON();
+
+    try {
+      socket.emit('LayerAdded', test)
+    }
+    catch(err) {
+      console.log(err);
+    }
+  }
+
+  function removeLayers(){
+    try {
+      socket.emit('RemoveLayers')
+    }
+    catch(err) {
+      console.log(err);
+    }
   }
 
   function gpsRecieved(sentence) {

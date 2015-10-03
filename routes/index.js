@@ -23,8 +23,4 @@ router.post('/filter', function(req, res, next){
   })
 })
 
-// Sockets
-
-
-
 module.exports = router;

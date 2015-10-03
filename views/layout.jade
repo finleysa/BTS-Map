@@ -2,6 +2,7 @@ doctype html
 html
   head
     title WebMap
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
     link(rel='stylesheet', href='/stylesheets/vendor/normalize.css')
     link(rel='stylesheet', href='/stylesheets/vendor/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/vendor/bootstrap-theme.min.css')
@@ -31,6 +32,8 @@ html
                 a(href='#') GPS
               li#show-bts
                 a(href='#') Show BTS
+              li#remove-layers
+                a(href='#') Remove Layers
               li
                 a(href='javascript:;', data-toggle='collapse', data-target='#center')
                   i.fa.fa-fw.fa-arrows-v
