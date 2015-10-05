@@ -23,6 +23,7 @@ exports.gps = function(fn){
 
       port.on('data', function(line) {
         var line = nmea.parse(line);
+        console.log(line);
         if(global.socket && line.sentence == "GGA")
           socket.emit("GPS", line);
         if(global.socket && line.sentence == "VTG")

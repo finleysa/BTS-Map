@@ -9,12 +9,13 @@
 
   var markerLayerGroup = L.layerGroup();
   var leafletLayerGroup = L.layerGroup().addTo(map);
-  //var breadCrumbGroup = L.layerGroup().addTo(map);
+  var breadCrumbGroup = L.layerGroup().addTo(map);
 
   var geoJSONLayer = L.geoJson().addTo(map);
   var socket = io();
 
-  var crumbTimer;
+  var crumbTimer = setInterval(layCrumb, 2000)
+
   var crumbArray = [];
 
   var showbts = false;
@@ -48,8 +49,8 @@
     initDraw();
 
     socket.on('GPS', gpsReceived);
-    socket.on('VTG', vtgReceived);
     socket.on('AllLayers', layersReceived);
+    socket.on('AddedLayer', layersReceived);
 
     $('#center-location').click(centerLocation);
     $('#marker-location').click(addMarker);
@@ -64,8 +65,9 @@
 
     // MAP EVENTS
     map.on('draw:created', mapObjectAdded)
-    map.on('zoomend', getBts);
-    map.on('dragend', getBts);
+    //map.on('zoomend', getBts);
+    //map.on('dragend', getBts);
+
     // END MAP EVENTS
 
 /*
@@ -99,20 +101,11 @@
     map.on('draw:created', function (e) {
         var type = e.layerType,
             layer = e.layer;
-            socket.on('LayerID', function(id){
-            });
-
         if(type == 'marker')
           layer.bindPopup('LAT: ' + e.layer._latlng.lat +'<br>LON: '+ e.layer._latlng.lng);
 
         drawnItems.addLayer(layer);
-
     });
-
-    map.on('draw:deleted', function (e) {
-      console.log(e);
-    });
-
   };
 
   function mapObjectAdded(e){
@@ -173,6 +166,7 @@
      if (sentence.numSat > 3){
        $('#gps').removeClass('bad-gps');
        $('#gps').addClass('good-gps');
+
      } else{
        $('#gps').removeClass('good-gps');
        $('#gps').addClass('bad-gps');
@@ -181,15 +175,7 @@
      var lat = numeral(Aircraft.latitude).format('0.00000');
      var lon = numeral(Aircraft.longitude).format('0.00000');
       $('#plane-location').text(lat + " " + lon);
-
-      crumbTimer = setInterval(layCrumb, 1000)
     }
-  }
-
-  function vtgReceived(sentence){
-    console.log(sentence);
-    //aircraftMarker.setAngle(50);
-
   }
 
   function showBts() {
@@ -251,7 +237,7 @@
       map.removeLayer(crumbArray[9]);
       crumbArray.pop();
     }
-    var position = new L.Marker(L.latLng({lat: Aircraft.latitude, lng: Aircraft.Longitude}), {icon: crumbIcon});
+    var position = new L.Marker(L.latLng({lat: Aircraft.latitude, lng: Aircraft.longitude}), {icon: crumbIcon});
     crumbArray.push(position);
     map.addLayer(position);
   }
@@ -269,4 +255,23 @@
 
     return {lat: latitude, lon: longitude};
   }
+
+  function angleFromCoordinate(startLat, startLong, endLat, endLong) {
+    var brng = Math.atan2(startLat - endLat, startLong - endLong);
+    brng = brng * (180 / Math.PI);
+    brng = (brng + 360) % 360;
+    brng = 360 - brng;
+    return brng;
+  }
+
+Math.degrees = function(rad)
+ {
+   return rad*(180/Math.PI);
+ }
+
+Math.radians = function(deg)
+ {
+   return deg * (Math.PI/180);
+ }
+
 })();

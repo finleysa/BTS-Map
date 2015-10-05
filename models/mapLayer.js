@@ -9,25 +9,39 @@ function MapLayer(data) {
 }
 
 MapLayer.prototype.insert = function(fn){
-  var maplayers = global.webmap.db.collection('maplayers');
-  var self = this;
+  try {
+    var maplayers = global.webmap.db.collection('maplayers');
+    var self = this;
 
-  maplayers.insert(self, function(err, record){
+    maplayers.insert(self, function(err, records){
+      fn(err);
+    });
+  }
+  catch(err){
     console.log(err);
-    fn(err, record);
-  });
+  }
 };
 
 MapLayer.removeLayers = function(fn){
-  var mapLayers = global.webmap.db.collection('maplayers');
-  mapLayers.remove({}, function(err, records){
-    fn(err, records);
-  });
+  try{
+    var mapLayers = global.webmap.db.collection('maplayers');
+    mapLayers.remove({}, function(err, records){
+      fn(err, records);
+    });
+  }
+  catch(err){
+    console.log(err);
+  }
 }
 
 MapLayer.findAll = function(fn){
-  var mapLayers = global.webmap.db.collection('maplayers');
-  mapLayers.find().toArray(function(err, records){
-    fn(err, records);
-  });
+  try{
+    var mapLayers = global.webmap.db.collection('maplayers');
+    mapLayers.find().toArray(function(err, records){
+      fn(err, records);
+    });
+  }
+  catch(err){
+    console.log(err);
+  }
 };
