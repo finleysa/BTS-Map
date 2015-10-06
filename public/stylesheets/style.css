@@ -41,7 +41,6 @@ table {
   color: red;
   font-weight: bold;
   font-size: 16px;
-  z-index: 3;
   position: fixed;
   bottom: 25px; }
 

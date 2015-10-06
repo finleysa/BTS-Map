@@ -85,7 +85,7 @@
   }
 
   function initMap() {
-		L.tileLayer('maps/tiles/{z0}/{x0}/{x1}/{y0}/{y1}.png').addTo(map); //gMapCatcher
+		L.tileLayer('maps/tiles/{z0}/{x0}/{x1}/{y0}/{y1}.png').addTo(map);
 	}
 
   function initDraw() {
@@ -98,10 +98,6 @@
         }
     });
     map.addControl(drawControl);
-
-    map.on('draw:created', function (e) {
-
-    });
   };
 
   function mapObjectAdded(e){
@@ -127,32 +123,29 @@
 
   function layersReceived(layer){
     if($.isArray(layer)) {
-      console.log(layer);
       for(var i=0; i< layer.length; i++) {
-        if(layer[i].data.properties.layerType == 'circle'){
-
-          var lat = layer[i].data.geometry.coordinates[1];
-          var lon = layer[i].data.geometry.coordinates[0];
-          var radius = layer[i].data.properties.radius;
-          var circle = L.circle([lat, lon], radius);
-          leafletLayerGroup.addLayer(circle);
+        if(layer[i].data.properties.layerType == 'circle') {
+          leafletLayerGroup.addLayer(createCircle(layer[i]));
         }
-        else
-        {
+        else {
           geoJSONLayer.addData(layer[i].data);
         }
       }
-
     }
     else {
-      geoJSONLayer.addData(layer.data);
+      if(layer.data.properties.layerType == 'circle') {
+        leafletLayerGroup.addLayer(createCircle(layer));
+      }
+      else {
+        geoJSONLayer.addData(layer.data);
+      }
     }
   }
 
   function removeLayers(){
-    map.removeLayer(markerLayerGroup);
-    map.removeLayer(leafletLayerGroup);
-    map.removeLayer(geoJSONLayer);
+    markerLayerGroup.clearLayers();
+    leafletLayerGroup.clearLayers();
+    geoJSONLayer.clearLayers();
   }
 
   function emitRemoveLayers(){
@@ -169,9 +162,11 @@
 
       var coordinates = dgmToDd(sentence.lat, sentence.lon);
 
+      aircraftMarker.setAngle(Aircraft.latitude, Aircraft.longitude, coordinates.lat, coordinates.lon);
+      aircraftMarker.setLatLng(L.latLng(coordinates.lat, coordinates.lon));
+
       Aircraft.latitude = coordinates.lat;
       Aircraft.longitude = coordinates.lon;
-      aircraftMarker.setLatLng(L.latLng(Aircraft.latitude, Aircraft.longitude));
 
      if (sentence.numSat > 3){
        $('#gps').removeClass('bad-gps');
@@ -283,5 +278,17 @@ Math.radians = function(deg)
  {
    return deg * (Math.PI/180);
  }
+
+function createCircle(layer) {
+  if(layer.data.properties.layerType == 'circle'){
+
+    var lat = layer.data.geometry.coordinates[1];
+    var lon = layer.data.geometry.coordinates[0];
+    var radius = layer.data.properties.radius;
+    var circle = L.circle([lat, lon], radius);
+
+    return circle;
+  }
+}
 
 })();
