@@ -13,8 +13,8 @@ MapLayer.prototype.insert = function(fn){
     var maplayers = global.webmap.db.collection('maplayers');
     var self = this;
 
-    maplayers.insert(self, function(err, records){
-      fn(err);
+    maplayers.insert(self, function(err, record){
+      fn(err, record);
     });
   }
   catch(err){

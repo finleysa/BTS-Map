@@ -1,13 +1,25 @@
-var MapLayer = require('../models/mapLayer')
+var MapLayer = require('../models/mapLayer');
+var io = require('socket.io')
+
+exports.SocketServer = function(app, server){
+  io = io(server);
+  io.on('connection', function(socket){
+    console.log('a user connected');
+    exports.GetLayers();
+    socket.on('LayerAdded', exports.Insert);
+    socket.on('RemoveLayers', exports.RemoveLayers);
+  });
+}
 
 exports.Insert = function(data){
   var newLayer = new MapLayer(data);
-  newLayer.insert(function(err, record){
+  newLayer.insert(function(err, result){
     if(err) {
       console.log('Layer error');
     }
     else {
-      socket.emit('LayerID', newLayer._id);
+      console.log('Layer added');
+      io.emit('AddLayer', newLayer);
     }
   });
 }
@@ -15,10 +27,11 @@ exports.Insert = function(data){
 exports.RemoveLayers = function(){
   MapLayer.removeLayers(function(err, number){
     if(err) {
-      console.log('Error removing Layers')
+      console.log('Error removing Layers');
     }
     else {
       console.log('Removed layers: ' + number);
+      io.emit('RemoveLayers');
     }
   })
 }
@@ -30,7 +43,8 @@ exports.GetLayers = function(){
     }
     else {
       console.log('Emitting GeoJSON layers: ' + records.length);
-      socket.emit('AllLayers', records);
+      if(records.length > 0);
+        io.emit('AllLayers', records);
     }
   })
 }

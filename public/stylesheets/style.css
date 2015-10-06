@@ -32,7 +32,7 @@ table {
 
 #map {
   position: static;
-  height: 100%; }
+  height: 70%; }
 
 #top-bar {
   height: 50px; }
@@ -57,6 +57,13 @@ table {
   z-index: 3;
   position: fixed; }
 
+#chat-window {
+  position: relative;
+  bottom: 0;
+  height: 30%;
+  background-color: white;
+  border: 1px solid black; }
+
 .full-width {
   width: 100%;
   margin-left: auto;
@@ -66,7 +73,9 @@ table {
 @media (max-width: 768px) {
   #cursor-location {
     right: 50px;
-    bottom: 50px; } }
+    bottom: 50px; }
+  #chat-window {
+    left: 0; } }
 
 @media (min-width: 768px) {
   #map {
@@ -79,6 +88,8 @@ table {
     display: block; }
   #cursor-location {
     left: 200px; }
+  #chat-window {
+    left: 175px; }
   .good-gps {
     background-color: green; }
   .bad-gps {

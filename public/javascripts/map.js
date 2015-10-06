@@ -50,12 +50,13 @@
 
     socket.on('GPS', gpsReceived);
     socket.on('AllLayers', layersReceived);
-    socket.on('AddedLayer', layersReceived);
+    socket.on('AddLayer', layersReceived);
+    socket.on('RemoveLayers', removeLayers);
 
     $('#center-location').click(centerLocation);
     $('#marker-location').click(addMarker);
     $('#show-bts').click(showBts);
-    $('#remove-layers').click(removeLayers);
+    $('#remove-layers').click(emitRemoveLayers);
 
     map.on('mousemove', function(e) {
       var lat = numeral(e.latlng.lat).format('0.00000');
@@ -99,25 +100,25 @@
     map.addControl(drawControl);
 
     map.on('draw:created', function (e) {
-        var type = e.layerType,
-            layer = e.layer;
-        if(type == 'marker')
-          layer.bindPopup('LAT: ' + e.layer._latlng.lat +'<br>LON: '+ e.layer._latlng.lng);
 
-        drawnItems.addLayer(layer);
     });
   };
 
   function mapObjectAdded(e){
     var layer = e.layer.toGeoJSON();
-    layer.properties.layerType = e.layerType;
+    var type = e.layerType;
 
-    if(layer.properties.layerType == 'circle'){
+    layer.properties.layerType = type;
+
+    if(type == 'circle'){
       layer.properties.radius = e.layer._mRadius
     }
 
     try {
+      //layer.bindPopup('LAT: ' + e.layer._latlng.lat +'<br>LON: '+ e.layer._latlng.lng);
+
       socket.emit('LayerAdded', layer)
+      //drawnItems.addLayer(layer);
     }
     catch(err) {
       console.log(err);
@@ -125,29 +126,38 @@
   }
 
   function layersReceived(layer){
-    for(var i=0; i< layer.length; i++) {
-      if(layer[i].data.properties.layerType == 'circle'){
+    if($.isArray(layer)) {
+      console.log(layer);
+      for(var i=0; i< layer.length; i++) {
+        if(layer[i].data.properties.layerType == 'circle'){
 
-        var lat = layer[i].data.geometry.coordinates[1];
-        var lon = layer[i].data.geometry.coordinates[0];
-        var radius = layer[i].data.properties.radius;
-        var circle = L.circle([lat, lon], radius);
-        leafletLayerGroup.addLayer(circle);
+          var lat = layer[i].data.geometry.coordinates[1];
+          var lon = layer[i].data.geometry.coordinates[0];
+          var radius = layer[i].data.properties.radius;
+          var circle = L.circle([lat, lon], radius);
+          leafletLayerGroup.addLayer(circle);
+        }
+        else
+        {
+          geoJSONLayer.addData(layer[i].data);
+        }
       }
-      else
-      {
-        geoJSONLayer.addData(layer[i].data);
-      }
+
+    }
+    else {
+      geoJSONLayer.addData(layer.data);
     }
   }
 
   function removeLayers(){
+    map.removeLayer(markerLayerGroup);
+    map.removeLayer(leafletLayerGroup);
+    map.removeLayer(geoJSONLayer);
+  }
+
+  function emitRemoveLayers(){
     try {
       socket.emit('RemoveLayers');
-      map.removeLayer(markerLayerGroup);
-      map.removeLayer(leafletLayerGroup);
-      map.removeLayer(geoJSONLayer);
-
     }
     catch(err) {
       console.log(err);
