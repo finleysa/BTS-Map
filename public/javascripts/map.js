@@ -66,6 +66,8 @@
 
     // MAP EVENTS
     map.on('draw:created', mapObjectAdded)
+    map.on('draw:deleted', mapObjectDeleted)
+
     //map.on('zoomend', getBts);
     //map.on('dragend', getBts);
 
@@ -93,14 +95,15 @@
     map.addLayer(drawnItems);
 
     var drawControl = new L.Control.Draw({
-        edit: {
-            featureGroup: drawnItems
-        }
+      //position: 'topright',
+      edit: {
+          featureGroup: geoJSONLayer
+      }
     });
     map.addControl(drawControl);
   };
 
-  function mapObjectAdded(e){
+  function mapObjectAdded(e) {
     var layer = e.layer.toGeoJSON();
     var type = e.layerType;
 
@@ -112,7 +115,7 @@
 
     try {
       //layer.bindPopup('LAT: ' + e.layer._latlng.lat +'<br>LON: '+ e.layer._latlng.lng);
-
+      console.log(e.layer);
       socket.emit('LayerAdded', layer)
       //drawnItems.addLayer(layer);
     }
@@ -121,9 +124,14 @@
     }
   }
 
+  function mapObjectDeleted(e) {
+    console.log(e);
+  }
+
   function layersReceived(layer){
     if($.isArray(layer)) {
       for(var i=0; i< layer.length; i++) {
+        console.log("array layer: " + layer[i]);
         if(layer[i].data.properties.layerType == 'circle') {
           leafletLayerGroup.addLayer(createCircle(layer[i]));
         }
@@ -137,6 +145,7 @@
         leafletLayerGroup.addLayer(createCircle(layer));
       }
       else {
+        console.log("single layer: " + layer.data)
         geoJSONLayer.addData(layer.data);
       }
     }
@@ -271,7 +280,7 @@
 
 Math.degrees = function(rad)
  {
-   return rad*(180/Math.PI);
+   return rad * (180/Math.PI);
  }
 
 Math.radians = function(deg)

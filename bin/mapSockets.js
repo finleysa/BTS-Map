@@ -7,6 +7,7 @@ exports.SocketServer = function(app, server){
     console.log('a user connected');
     exports.GetLayers(socket);
     socket.on('LayerAdded', exports.Insert);
+    socket.on('RemoveLayer', exports.RemoveLayer);
     socket.on('RemoveLayers', exports.RemoveLayers);
   });
 }
@@ -15,7 +16,7 @@ exports.Insert = function(data){
   var newLayer = new MapLayer(data);
   newLayer.insert(function(err, result){
     if(err) {
-      console.log('Layer error');
+      logger.error('mapSockets: ' + err);
     }
     else {
       console.log('Layer added');
@@ -27,7 +28,7 @@ exports.Insert = function(data){
 exports.RemoveLayers = function(){
   MapLayer.removeLayers(function(err, number){
     if(err) {
-      console.log('Error removing Layers');
+      logger.error('mapSockets: ' + err);
     }
     else {
       console.log('Removed layers: ' + number);
@@ -36,10 +37,22 @@ exports.RemoveLayers = function(){
   })
 }
 
+exports.RemoveLayer = function(layer){
+  var id = layer._id;
+  MapLayer.removeLayers(id, function(err, number){
+    if(err) {
+      logger.error('mapSockets: ' + err);
+    }
+    else {
+      console.log('Removed layer: ' + id);
+    }
+  })
+}
+
 exports.GetLayers = function(socket) {
   MapLayer.findAll(function(err, records){
     if(err) {
-      console.log('Error removing Layers');
+      logger.error('mapSockets: ' + err);
     }
     else {
       console.log('Emitting GeoJSON layers: ' + records.length);

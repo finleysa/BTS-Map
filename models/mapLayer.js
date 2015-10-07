@@ -4,6 +4,7 @@ var Mongo = require('mongodb');
 var fs = require('fs');
 var path = require('path');
 
+
 function MapLayer(data) {
   this.data = data;
 }
@@ -18,7 +19,7 @@ MapLayer.prototype.insert = function(fn){
     });
   }
   catch(err){
-    console.log(err);
+    logger.error('mapLayer: ' + err);
   }
 };
 
@@ -30,9 +31,22 @@ MapLayer.removeLayers = function(fn){
     });
   }
   catch(err){
-    console.log(err);
+    logger.error('mapLayer: ' + err);
   }
 }
+
+MapLayer.deleteById = function(id, fn){
+  try{
+    var mapLayers = global.webmap.db.collection('maplayers');
+
+    items.remove({_id:_id}, function(err, count){
+      fn(count);
+    });
+  }
+  catch(err){
+    logger.error('mapLayer: ' + err);
+  }
+};
 
 MapLayer.findAll = function(fn){
   try{
@@ -42,6 +56,6 @@ MapLayer.findAll = function(fn){
     });
   }
   catch(err){
-    console.log(err);
+    logger.error('mapLayer: ' + err);
   }
 };
