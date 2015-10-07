@@ -1,5 +1,5 @@
 var winston = require('winston');
-var logger = new (winston.Logger)({
+global.logger = new (winston.Logger)({
   transports: [
     new (winston.transports.Console)(),
     new (winston.transports.File)({ filename: 'webmap.log' })
@@ -9,7 +9,6 @@ var logger = new (winston.Logger)({
 
 exports.connect = function(req, res, next){
   try{
-    global.logger = logger;
     next();
   }
   catch(err)
