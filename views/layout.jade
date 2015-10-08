@@ -39,8 +39,9 @@ html
                       li
                         select#port-select
                           option
-                          each port in ports
-                            option=port.comName
+                          if ports
+                            each port in ports
+                              option=port.comName
                           
               //li#show-bts
                 //a(href='#') Show BTS

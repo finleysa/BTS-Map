@@ -87,7 +87,7 @@ table {
 #port-select {
   padding: 5px;
   margin: 5px;
-  width: 150px;
+  height: 40px;
 }
 
 .full-width {
@@ -105,6 +105,10 @@ table {
 
   #chat-window {
     left: 0;
+  }
+
+  #port-select {
+    width: 500px;
   }
 }
 
@@ -129,6 +133,10 @@ table {
 
   #chat-window {
     left: 175px;
+  }
+
+  #port-select {
+    width: 150px;
   }
 
   .good-gps {

@@ -3,35 +3,22 @@ var nmea = require('nmea');
 var mapSockets = require('./mapSockets');
 var initialized = false;
 var io = require('socket.io')();
-var port = new serialport.SerialPort('COM3', {
-                baudrate: 4800,
-                parser: serialport.parsers.readline('\r\n')},
-                false);
 
 var testPort;
 
-exports.connect = function(req, res, next){
-  if(initialized){
-    next();
-  }else{
-    exports.gps(next);
-  }
-};
-
 exports.changePort = function(port){
-  console.log('POR !!!!!T' +port)
-  port.close(function(err){
-    console.log(err);
-  });
-  port = new serialport.SerialPort(port, {
+  var port = new serialport.SerialPort(port, {
                   baudrate: 4800,
                   parser: serialport.parsers.readline('\r\n')},
                   false);
 
-  exports.gps();
+  exports.gps(port);
 }
 
-exports.gps = function(fn){
+exports.gps = function(port){
+  if (port.isOpen()) {
+    port.close();
+  }
   port.open(function (error) {
     if (!error) {
       initialized = true;
@@ -59,7 +46,6 @@ exports.gps = function(fn){
       //logger.error('nmea: ' + error)
       initialized = false;
     }
-    fn();
   });
 };
 

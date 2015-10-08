@@ -3,6 +3,7 @@ var uglify = require('gulp-uglify')
 var concat = require('gulp-concat');
 var gulpif = require('gulp-if');
 var sass = require('gulp-sass');
+var minify = require('gulp-minify');
 
 var production = process.env.NODE_ENV === 'production';
 
@@ -33,7 +34,14 @@ gulp.task('vendor', function() {
     .pipe(gulp.dest('public/javascripts'));
 });
 
+gulp.task('compress', function() {
+  return gulp.src('./public/javascripts/source/map.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('./public/javascripts/map.js'));
+});
+
 gulp.task('watch', function(){
   gulp.watch('public/javascripts/*.{js,coffee}', ['scripts']);
   gulp.watch('public/stylesheets/**/*.scss', ['sass']);
+  gulp.watch('public/javascripts/source/*.js', ['compress']);
 });

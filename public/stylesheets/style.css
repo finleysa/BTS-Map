@@ -67,7 +67,7 @@ table {
 #port-select {
   padding: 5px;
   margin: 5px;
-  width: 150px; }
+  height: 40px; }
 
 .full-width {
   width: 100%;
@@ -80,7 +80,9 @@ table {
     right: 50px;
     bottom: 50px; }
   #chat-window {
-    left: 0; } }
+    left: 0; }
+  #port-select {
+    width: 500px; } }
 
 @media (min-width: 768px) {
   #map {
@@ -95,6 +97,8 @@ table {
     left: 200px; }
   #chat-window {
     left: 175px; }
+  #port-select {
+    width: 150px; }
   .good-gps {
     background-color: green; }
   .bad-gps {
