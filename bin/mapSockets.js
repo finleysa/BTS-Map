@@ -1,5 +1,6 @@
 var MapLayer = require('../models/mapLayer');
-var io = require('socket.io')
+var io = require('socket.io');
+var nmea = require('./nmea');
 
 exports.SocketServer = function(app, server){
   io = io(server);
@@ -9,6 +10,7 @@ exports.SocketServer = function(app, server){
     socket.on('LayerAdded', exports.Insert);
     socket.on('RemoveLayer', exports.RemoveLayer);
     socket.on('RemoveLayers', exports.RemoveLayers);
+    socket.on('ChangePort', nmea.changePort)
   });
 }
 
@@ -60,4 +62,12 @@ exports.GetLayers = function(socket) {
       socket.emit('AllLayers', records);
     }
   });
+}
+
+exports.EmitGPS = function(nmea){
+  try {
+    io.emit('GPS', nmea)
+  } catch (e) {
+    logger.error('mapSockets: ' + e);
+  }
 }

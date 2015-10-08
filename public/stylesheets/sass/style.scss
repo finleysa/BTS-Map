@@ -47,6 +47,7 @@ table {
 #map {
   position: static;
   height: 100%;
+  width: 100%;
 }
 
 #top-bar {
@@ -81,6 +82,12 @@ table {
   height: 0%;
   background-color: white;
   border: 1px solid black;
+}
+
+#port-select {
+  padding: 5px;
+  margin: 5px;
+  width: 150px;
 }
 
 .full-width {

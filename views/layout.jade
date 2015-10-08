@@ -28,16 +28,28 @@ html
           // SIDE NAVIGATION
           .collapse.navbar-collapse.sidebar-collapse
             ul.nav.navbar-nav.side-nav
-              li#gps.bad-gps
-                a(href='#') GPS
+              li
+                a#gps.bad-gps(href='javascript:;', data-toggle='collapse', data-target='#gps-settings')
+                  i.fa.fa-fw.fa-arrows-v
+                  |   GPS 
+                  i.fa.fa-fw.fa-caret-down
+                ul#gps-settings.collapse
+                  li
+                    ul
+                      li
+                        select#port-select
+                          option
+                          each port in ports
+                            option=port.comName
+                          
               //li#show-bts
                 //a(href='#') Show BTS
               li#remove-layers
-                a(href='#') Remove Old Layers
+                a(href='#') Remove Layers
               li
                 a(href='javascript:;', data-toggle='collapse', data-target='#center')
                   i.fa.fa-fw.fa-arrows-v
-                  |  Center Location 
+                  |  Center Location
                   i.fa.fa-fw.fa-caret-down
                 ul#center.collapse
                   li

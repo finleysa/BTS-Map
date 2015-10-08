@@ -4,7 +4,6 @@ var Mongo = require('mongodb');
 var fs = require('fs');
 var path = require('path');
 
-
 function MapLayer(data) {
   this.data = data;
 }

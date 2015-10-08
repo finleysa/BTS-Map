@@ -14,8 +14,8 @@
   var geoJSONLayer = L.geoJson().addTo(map);
   var socket = io();
 
-  var crumbTimer = setInterval(layCrumb, 2000)
-
+  var crumbTimer;
+  var crumbTimerStarted = false;
   var crumbArray = [];
 
   var showbts = false;
@@ -44,7 +44,7 @@
     heading: 0
   }
 
-  function initialize(){
+  function initialize() {
 		initMap();
     initDraw();
 
@@ -57,6 +57,9 @@
     $('#marker-location').click(addMarker);
     $('#show-bts').click(showBts);
     $('#remove-layers').click(emitRemoveLayers);
+    $('#port-select').change(function(){
+      socket.emit('ChangePort', $('#port-select option:selected').text());
+    });
 
     map.on('mousemove', function(e) {
       var lat = numeral(e.latlng.lat).format('0.00000');
@@ -128,7 +131,7 @@
     console.log(e);
   }
 
-  function layersReceived(layer){
+  function layersReceived(layer) {
     if($.isArray(layer)) {
       for(var i=0; i< layer.length; i++) {
         console.log("array layer: " + layer[i]);
@@ -151,13 +154,13 @@
     }
   }
 
-  function removeLayers(){
+  function removeLayers() {
     markerLayerGroup.clearLayers();
     leafletLayerGroup.clearLayers();
     geoJSONLayer.clearLayers();
   }
 
-  function emitRemoveLayers(){
+  function emitRemoveLayers() {
     try {
       socket.emit('RemoveLayers');
     }
@@ -167,11 +170,13 @@
   }
 
   function gpsReceived(sentence) {
-    if (sentence.lat != "" || sentence.lon !=""){
+    if(sentence.sentence == "VTG") {
+      aircraftMarker.setAngle(sentence.trackTrue);
+    }
+
+    else if (sentence.lat != "" || sentence.lon !=""){
 
       var coordinates = dgmToDd(sentence.lat, sentence.lon);
-
-      aircraftMarker.setAngle(Aircraft.latitude, Aircraft.longitude, coordinates.lat, coordinates.lon);
       aircraftMarker.setLatLng(L.latLng(coordinates.lat, coordinates.lon));
 
       Aircraft.latitude = coordinates.lat;
@@ -180,10 +185,12 @@
      if (sentence.numSat > 3){
        $('#gps').removeClass('bad-gps');
        $('#gps').addClass('good-gps');
+       startCrumbTimer();
 
      } else{
        $('#gps').removeClass('good-gps');
        $('#gps').addClass('bad-gps');
+       stopCrumbTimer();
      }
 
      var lat = numeral(Aircraft.latitude).format('0.00000');
@@ -227,6 +234,20 @@
       });
     }
   };
+
+  function startCrumbTimer() {
+    if(crumbTimerStarted == false) {
+      crumbTimer = setInterval(layCrumb, 2000);
+      crumbTimerStarted = true;
+    }
+  }
+
+  function stopCrumbTimer() {
+    if(crumbTimerStarted == true) {
+      clearTimeout(crumbTimer);
+      crumbTimerStarted = false;
+    }
+  }
 
   function removeBts() {
     $('#bts-number').text('');
