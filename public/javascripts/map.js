@@ -203,6 +203,8 @@
 
       $('#plane-location').text("Aircraft: " + lat + " " + lon);
       $('#plane-altitude').text("Altitude: " + alt + " ft");
+      $('#plane-speed').text("Speed: " + Aircraft.speedKnots + " knots");
+
     }
   }
 

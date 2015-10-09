@@ -49,6 +49,10 @@ table {
   top: 75px;
   right: 50px; }
 
+#plane-speed {
+  top: 95px;
+  right: 50px; }
+
 #chat-window {
   position: relative;
   bottom: 0;
