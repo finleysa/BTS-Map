@@ -41,7 +41,9 @@
   var Aircraft = {
     latitude: 0,
     longitude: 0,
-    heading: 0
+    heading: 0,
+    altiitude: 0,
+    speedKnots: 0
   }
 
   function initialize() {
@@ -64,7 +66,7 @@
     map.on('mousemove', function(e) {
       var lat = numeral(e.latlng.lat).format('0.00000');
       var lng = numeral(e.latlng.lng).format('0.00000');
-      $('#cursor-location').text(lat + " " + lng );
+      $('#cursor-location').text("Cursor: " + lat + " " + lng );
     });
 
     // MAP EVENTS
@@ -172,6 +174,7 @@
   function gpsReceived(sentence) {
     if(sentence.sentence == "VTG") {
       aircraftMarker.setAngle(sentence.trackTrue);
+      Aircraft.speedKnots = sentence.speedKnots;
     }
 
     else if (sentence.lat != "" || sentence.lon !=""){
@@ -181,8 +184,9 @@
 
       Aircraft.latitude = coordinates.lat;
       Aircraft.longitude = coordinates.lon;
+      Aircraft.altitude = sentence.alt;
 
-     if (sentence.numSat > 3){
+     if (sentence.fixType == "fix"){
        $('#gps').removeClass('bad-gps');
        $('#gps').addClass('good-gps');
        startCrumbTimer();
@@ -195,7 +199,10 @@
 
      var lat = numeral(Aircraft.latitude).format('0.00000');
      var lon = numeral(Aircraft.longitude).format('0.00000');
-      $('#plane-location').text(lat + " " + lon);
+     var alt = numeral(Aircraft.altitude * 3.280839895).format('0');
+
+      $('#plane-location').text("Aircraft: " + lat + " " + lon);
+      $('#plane-altitude').text("Altitude: " + alt + " ft");
     }
   }
 

@@ -55,25 +55,17 @@ table {
 }
 
 #cursor-location{
-  color: red;
-  font-weight: bold;
-  font-size: 16px;
-  position: fixed;
   bottom: 25px;
-}
-
-#center-location, #marker-location {
-  width: 100%;
 }
 
 #plane-location {
   bottom: 25px;
   right: 50px;
-  color: red;
-  font-weight: bold;
-  font-size: 16px;
-  z-index: 3;
-  position: fixed;
+}
+
+#plane-altitude {
+  top: 75px;
+  right: 50px;
 }
 
 #chat-window {
@@ -97,6 +89,13 @@ table {
    max-width: initial;
 }
 
+.map-text {
+  color: red;
+  font-weight: bold;
+  font-size: 16px;
+  position: fixed;
+}
+
 @media(max-width:768px) {
   #cursor-location {
     right: 50px;
@@ -108,7 +107,7 @@ table {
   }
 
   #port-select {
-    width: 500px;
+    width: 300px;
   }
 }
 
@@ -137,6 +136,11 @@ table {
 
   #port-select {
     width: 150px;
+  }
+
+  .coordinates {
+    width: 120px;
+    margin-left: 20px;
   }
 
   .good-gps {

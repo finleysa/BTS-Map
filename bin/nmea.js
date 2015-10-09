@@ -4,8 +4,6 @@ var mapSockets = require('./mapSockets');
 var initialized = false;
 var io = require('socket.io')();
 
-var testPort;
-
 exports.changePort = function(port){
   var port = new serialport.SerialPort(port, {
                   baudrate: 4800,
@@ -39,6 +37,7 @@ exports.gps = function(port){
           }
         } catch(e) {
           logger.error('nmea: ' + e)
+          port.close();
         }
 
       });
