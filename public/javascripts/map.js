@@ -16,7 +16,6 @@
 
   var crumbTimer;
   var crumbTimerStarted = false;
-  var crumbArray = [];
 
   var showbts = false;
   var showGsm = false;
@@ -172,12 +171,14 @@
   }
 
   function gpsReceived(sentence) {
-    if(sentence.sentence == "VTG") {
+    if(sentence.sentence == "VTG" || sentence.sentence == "RMC") {
       aircraftMarker.setAngle(sentence.trackTrue);
       Aircraft.speedKnots = sentence.speedKnots;
     }
 
-    else if (sentence.lat != "" || sentence.lon !=""){
+    else if (sentence.sentence == "GGA" &&
+             sentence.lat != "" &&
+             sentence.lon !="") {
 
       var coordinates = dgmToDd(sentence.lat, sentence.lon);
       aircraftMarker.setLatLng(L.latLng(coordinates.lat, coordinates.lon));
@@ -277,12 +278,7 @@
   }
 
   function layCrumb(){
-    if(crumbArray.length > 10){
-      map.removeLayer(crumbArray[9]);
-      crumbArray.pop();
-    }
     var position = new L.Marker(L.latLng({lat: Aircraft.latitude, lng: Aircraft.longitude}), {icon: crumbIcon});
-    crumbArray.push(position);
     map.addLayer(position);
   }
 

@@ -12,12 +12,12 @@ exports.connect = function(req, res, next){
   }
 };
 
-exports.db = function(fn){
+exports.db = function(next){
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     global.webmap = {};
     global.webmap.db = db;
     console.log("Connected correctly to Mongo");
-    fn();
+    next();
   });
 };

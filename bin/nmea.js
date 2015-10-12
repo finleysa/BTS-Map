@@ -3,6 +3,7 @@ var nmea = require('nmea');
 var mapSockets = require('./mapSockets');
 var initialized = false;
 var io = require('socket.io')();
+var gps = require('../models/gps');
 
 exports.changePort = function(port){
   var port = new serialport.SerialPort(port, {
@@ -16,25 +17,25 @@ exports.changePort = function(port){
 exports.gps = function(port){
   if (port.isOpen()) {
     port.close();
+    logger.info("GPS Port closed.");
   }
   port.open(function (error) {
     if (!error) {
       initialized = true;
       logger.info("GPS Port opened.");
+      var date = new Date();
 
       port.on('data', function(line) {
         try{
           var line = nmea.parse(line);
-          var nmeaData = global.webmap.db.collection('nmea');
 
-          if(line.sentence == "GGA") {
-            mapSockets.EmitGPS(line);
-            nmeaData.insert(line);
-          }
-          if(line.sentence == "VTG") {
-            mapSockets.EmitGPS(line);
-            nmeaData.insert(line);
-          }
+          mapSockets.EmitGPS(line);
+          line.datetime = date.getUTCFullYear()+date.getUTCMonth()+date.getUTCSeconds();
+          gps.insert(line, function(err){
+            if (err){
+              logger.error('nmea: ' + err)
+            }
+          });
         } catch(e) {
           logger.error('nmea: ' + e)
           port.close();
