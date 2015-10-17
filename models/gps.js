@@ -2,12 +2,11 @@ module.exports = GPS;
 
 function GPS(){};
 
-GPS.insert = function(fn){
+GPS.insert = function(line, fn){
   try {
     var nmeaData = global.webmap.db.collection('nmea');
-    var self = this;
 
-    nmeaData.insert(self, function(err, record){
+    nmeaData.insert(line, function(err, record){
       fn(err);
     });
   }
@@ -38,4 +37,4 @@ GPS.findByQuery = function(query, fn) {
   catch(err){
     logger.error('gps: ' + err);
   }
-}
+};

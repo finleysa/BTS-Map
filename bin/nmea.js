@@ -23,17 +23,18 @@ exports.gps = function(port){
     if (!error) {
       initialized = true;
       logger.info("GPS Port opened.");
-      var date = new Date();
 
       port.on('data', function(line) {
         try{
           var line = nmea.parse(line);
 
-          mapSockets.EmitGPS(line);
-          line.datetime = date.getUTCFullYear()+date.getUTCMonth()+date.getUTCSeconds();
+          var date = new Date();
+          line.datetime = date.getUTCFullYear()+date.getUTCMonth()+date.getUTCDay();
           gps.insert(line, function(err){
             if (err){
               logger.error('nmea: ' + err)
+            } else {
+              mapSockets.EmitGPS(line);
             }
           });
         } catch(e) {

@@ -21,23 +21,10 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('./public/stylesheets'));
 });
 
-gulp.task('vendor', function() {
-  return gulp.src([
-    'public/javascripts/vendor/modernizr.js',
-    'public/javascripts/vendor/placeholder.js',
-    'public/javascripts/vendor/fastclick.js',
-    'public/javascripts/vendor/bootstrap.js',
-    'public/javascripts/vendor/leaflet.js',
-    'public/javascripts/vendor/numeral.min.js',
-  ]).pipe(concat('vendor.js'))
-    .pipe(gulpif(production, uglify({ mangle: false })))
-    .pipe(gulp.dest('public/javascripts'));
-});
-
 gulp.task('compress', function() {
-  return gulp.src('./public/javascripts/source/map.js')
+  return gulp.src('./public/javascripts/source/*.js')
     .pipe(uglify())
-    .pipe(gulp.dest('./public/javascripts/map.js'));
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('watch', function(){

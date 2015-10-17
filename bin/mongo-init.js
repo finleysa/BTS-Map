@@ -3,16 +3,16 @@ var MongoClient = require('mongodb').MongoClient
 var url = 'mongodb://localhost:27017/webmap';
 var initialized = false;
 
-exports.connect = function(req, res, next){
+exports.connect = function(req, res, next) {
   if(!initialized){
     initialized = true;
     exports.db(next);
-  }else{
+  } else {
     next();
   }
 };
 
-exports.db = function(next){
+exports.db = function(next) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     global.webmap = {};

@@ -22,7 +22,6 @@ router.get('/celltowers', function(req, res, next){
 
 router.post('/filter', function(req, res, next){
   Cell.filterBts(req.body, function(success){
-
   })
 })
 

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "supervisor ./bin/www",
+    "simulate": "simulate=true supervisor ./bin/www"
   },
   "dependencies": {
     "bcryptjs": "*",
@@ -24,7 +25,8 @@
     "socket.io": "1.3.7",
     "serialport": "*",
     "nmea": "0.0.9",
-    "winston": "1.0.2"
+    "winston": "1.0.2",
+    "mongoose": "~4.1.11"
   },
   "devDependencies": {
     "express-debug": "^1.1.1",

@@ -69,8 +69,8 @@
     });
 
     // MAP EVENTS
-    map.on('draw:created', mapObjectAdded)
-    map.on('draw:deleted', mapObjectDeleted)
+    map.on('draw:created', mapObjectAdded);
+    map.on('draw:deleted', mapObjectDeleted);
 
     //map.on('zoomend', getBts);
     //map.on('dragend', getBts);
@@ -113,14 +113,14 @@
 
     layer.properties.layerType = type;
 
-    if(type == 'circle'){
-      layer.properties.radius = e.layer._mRadius
+    if(type == 'circle') {
+      layer.properties.radius = e.layer._mRadius;
     }
 
     try {
       //layer.bindPopup('LAT: ' + e.layer._latlng.lat +'<br>LON: '+ e.layer._latlng.lng);
       console.log(e.layer);
-      socket.emit('LayerAdded', layer)
+      socket.emit('LayerAdded', layer);
       //drawnItems.addLayer(layer);
     }
     catch(err) {

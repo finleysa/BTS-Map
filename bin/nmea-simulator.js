@@ -7,8 +7,7 @@ var gps = require('../models/gps')
 exports.startSimulator = function(req, res, next) {
   if(simStarted){
     next();
-  }
-  else{
+  } else {
     simStarted = true;
     //var nmeaData = global.webmap.db.collection('nmea');
     var query = { $or: [{sentence: 'GGA'}, {sentence: 'RMC'}, {sentence: 'VTG'}] }
@@ -27,14 +26,17 @@ exports.startSimulator = function(req, res, next) {
 }
 
 function layCrumb() {
-  if(iterator < nmea.length){
+  if(iterator < nmea.length) {
     mapSockets.EmitGPS(nmea[iterator]);
-    iterator++;
 
     if(nmea[iterator].sentence == 'RMC' ||
        nmea[iterator].sentence == 'VTG')
     {
-         layCrumb();
+      iterator++;
+      layCrumb();
+    }
+    else{
+      iterator+=10;
     }
   }
 }
