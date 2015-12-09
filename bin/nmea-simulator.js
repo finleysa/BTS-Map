@@ -2,7 +2,7 @@ var simStarted = false;
 var nmea;
 var iterator = 0;
 var mapSockets = require('./mapSockets');
-var gps = require('../models/gps')
+var gps = require('../models/gps');
 
 exports.startSimulator = function(req, res, next) {
   if(simStarted){
@@ -32,11 +32,11 @@ function layCrumb() {
     if(nmea[iterator].sentence == 'RMC' ||
        nmea[iterator].sentence == 'VTG')
     {
-      iterator++;
+      iterator+=10;
       layCrumb();
     }
     else{
-      iterator+=10;
+      iterator++;
     }
   }
 }

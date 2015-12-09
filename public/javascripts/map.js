@@ -16,6 +16,10 @@
 
   var crumbTimer;
   var crumbTimerStarted = false;
+  var followingPlaneTimer;
+  var followPlaneTimerStarted = false;
+
+  var followingPlane = false;
 
   var showbts = false;
   var showGsm = false;
@@ -56,11 +60,11 @@
 
     $('#center-location').click(centerLocation);
     $('#marker-location').click(addMarker);
-    $('#show-bts').click(showBts);
     $('#remove-layers').click(emitRemoveLayers);
     $('#port-select').change(function(){
       socket.emit('ChangePort', $('#port-select option:selected').text());
     });
+    $('#follow-plane').click(followPlane);
 
     map.on('mousemove', function(e) {
       var lat = numeral(e.latlng.lat).format('0.00000');
@@ -72,8 +76,8 @@
     map.on('draw:created', mapObjectAdded)
     map.on('draw:deleted', mapObjectDeleted)
 
-    //map.on('zoomend', getBts);
-    //map.on('dragend', getBts);
+    map.on('zoomend', getBts);
+    map.on('dragend', getBts);
 
     // END MAP EVENTS
 
@@ -129,13 +133,13 @@
   }
 
   function mapObjectDeleted(e) {
-    console.log(e);
+    console.log(e.target);
+    //socket.emit('LayerRemoved', e.layer)
   }
 
   function layersReceived(layer) {
     if($.isArray(layer)) {
       for(var i=0; i< layer.length; i++) {
-        console.log("array layer: " + layer[i]);
         if(layer[i].data.properties.layerType == 'circle') {
           leafletLayerGroup.addLayer(createCircle(layer[i]));
         }
@@ -178,7 +182,7 @@
 
     else if (sentence.sentence == "GGA" &&
              sentence.lat != "" &&
-             sentence.lon !="") {
+             sentence.lon != "") {
 
       var coordinates = dgmToDd(sentence.lat, sentence.lon);
       aircraftMarker.setLatLng(L.latLng(coordinates.lat, coordinates.lon));
@@ -209,6 +213,16 @@
     }
   }
 
+  function followPlane(){
+    followingPlane = !followingPlane
+    if (followingPlane){
+      startPlaneFollowTimer();
+    }
+    else{
+      stopPlaneFollowTimer();
+    }
+  }
+
   function showBts() {
     if(showbts == false) {
       $('#show-bts').addClass('active');
@@ -222,6 +236,16 @@
     }
   }
 
+  function getFlightPath() {
+    var url = '/flightpath';
+    $.get(url, function(data){
+      var gpsArray = new Array(data.length);
+      for(var i=0; i<data.length; i++){
+
+      }
+    });
+  }
+
   function getBts() {
     //var url = '/celltowers/?lat='+lat+'&lng='+lng+'&limit='+limitVal
     removeBts();
@@ -229,8 +253,9 @@
       var bounds = map.getBounds();
       var url = '/celltowers?lat1='+bounds.getNorthEast().lat + "&lon1=" + bounds.getNorthEast().lng + "&lat2=" + bounds.getNorthWest().lat + "&lon2=" + bounds.getNorthWest().lng + "&lat3=" + bounds.getSouthWest().lat + "&lon3=" + bounds.getSouthWest().lng + "&lat4=" + bounds.getSouthEast().lat + "&lon4=" + bounds.getSouthEast().lng;
       $.get(url, function(data){
-        var markerArray = new Array(data.length)
-        $('#bts-number').text('Num BTS: ' + data.celltowers.length)
+        console.log(data);
+        var markerArray = new Array(data.length);
+        $('#bts-number').text('Num BTS: ' + data.celltowers.length);
         for(var i=0; i<data.celltowers.length; i++){
           var cell = data.celltowers[i];
           var text = "Radio: " + cell.radio + "</br>" +
@@ -259,6 +284,14 @@
     }
   }
 
+  function startPlaneFollowTimer(){
+    followingPlaneTimer = setInterval(function(){map.panTo({lat:Aircraft.latitude, lon:Aircraft.longitude})}, 5000);
+  }
+
+  function stopPlaneFollowTimer(){
+    clearTimeout(followingPlaneTimer);
+  }
+
   function removeBts() {
     $('#bts-number').text('');
     map.removeLayer(markerLayerGroup);
@@ -267,7 +300,7 @@
 	function centerLocation() {
 		var lat = $('#center-lat').val();
 		var lng = $('#center-lon').val();
-		map.panTo({lat,lng})
+		map.panTo({lat:lat,lon:lng})
 	}
 
   function addMarker() {
@@ -301,26 +334,26 @@
     return {lat: latitude, lon: longitude};
   }
 
-Math.degrees = function(rad)
- {
-   return rad * (180/Math.PI);
- }
+  Math.degrees = function(rad)
+   {
+     return rad * (180/Math.PI);
+   }
 
-Math.radians = function(deg)
- {
-   return deg * (Math.PI/180);
- }
+  Math.radians = function(deg)
+   {
+     return deg * (Math.PI/180);
+   }
 
-function createCircle(layer) {
-  if(layer.data.properties.layerType == 'circle'){
+  function createCircle(layer) {
+    if(layer.data.properties.layerType == 'circle'){
 
-    var lat = layer.data.geometry.coordinates[1];
-    var lon = layer.data.geometry.coordinates[0];
-    var radius = layer.data.properties.radius;
-    var circle = L.circle([lat, lon], radius);
+      var lat = layer.data.geometry.coordinates[1];
+      var lon = layer.data.geometry.coordinates[0];
+      var radius = layer.data.properties.radius;
+      var circle = L.circle([lat, lon], radius);
 
-    return circle;
+      return circle;
+    }
   }
-}
 
 })();

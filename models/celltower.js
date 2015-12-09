@@ -32,7 +32,7 @@ Celltower.findNearest = function(q, callback){
         [q.lon2 * 1, q.lat2 * 1],
         [q.lon3 * 1, q.lat3 * 1],
         [q.lon4 * 1, q.lat4 * 1],
-        [q.lon1 * 1, q.lat1 * 1] ] ] } } } }).toArray(function(err, records){
+        [q.lon1 * 1, q.lat1 * 1] ] ] } } }, 'averageSignal': { $gt: -60 } } ).toArray(function(err, records){
     callback(records);
   });
 };

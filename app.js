@@ -5,8 +5,9 @@ var morgan = require('morgan');
 var logger = require('./bin/logger');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var initMongo  = require('./bin/mongo-init');
+var initMongo  = require('./bin/init-mongo');
 var nmea = require('./bin/nmea.js');
+var showNmea = require('./bin/show-nmea.js');
 var nmeaSimulator = require('./bin/nmea-simulator.js');
 var routes = require('./routes/index');
 
@@ -18,10 +19,12 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(initMongo.connect);
+initMongo.start;
+
 if(process.env.simulate == "true") {
   app.use(nmeaSimulator.startSimulator)
 }
+
 app.use(morgan('dev'));
 app.use(logger.connect);
 app.use(bodyParser.json());

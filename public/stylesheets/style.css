@@ -31,7 +31,7 @@ table {
     background: #B27200; }
 
 #map {
-  position: static;
+  overflow: hidden;
   height: 100%;
   width: 100%; }
 
