@@ -44,6 +44,11 @@ table {
   }
 }
 
+ul {
+  list-style-type: none;
+  padding: 10px;
+}
+
 #map {
   overflow: hidden;
   height: 100%;
@@ -85,6 +90,7 @@ table {
   padding: 5px;
   margin: 5px;
   height: 40px;
+  color: black;
 }
 
 .full-width {
@@ -101,6 +107,14 @@ table {
   position: fixed;
 }
 
+.good-gps {
+  color: #00ff00 !important;
+}
+
+.bad-gps {
+  color: #00EDFF !important;
+}
+
 @media(max-width:768px) {
   #cursor-location {
     right: 50px;
@@ -113,7 +127,13 @@ table {
 
   #port-select {
     width: 300px;
+    height: 40px;
   }
+
+  #center-lat {
+
+  }
+
 }
 
 @media(min-width:768px) {
@@ -141,19 +161,12 @@ table {
 
   #port-select {
     width: 150px;
+    height: 40px;
   }
 
   .coordinates {
     width: 120px;
     margin-left: 20px;
-  }
-
-  .good-gps {
-    background-color: green;
-  }
-
-  .bad-gps {
-    background-color: red;
   }
 
   .side-nav {

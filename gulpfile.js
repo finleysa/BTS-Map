@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var uglify = require('gulp-uglify')
 var concat = require('gulp-concat');
+var babel = require('gulp-babel');
 var gulpif = require('gulp-if');
 var sass = require('gulp-sass');
 var minify = require('gulp-minify');
@@ -12,7 +13,13 @@ gulp.task('scripts', function(){
   ])
     .pipe(concat('all.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest('public/javascripts/source'));
+    .pipe(gulp.dest('./public/javascripts/source'));
+});
+
+gulp.task("babel", function () {
+  return gulp.src("./public/javascripts/babel/*.js")
+    .pipe(babel())
+    .pipe(gulp.dest("./public/javascripts/"));
 });
 
 gulp.task('sass', function () {

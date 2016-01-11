@@ -27,8 +27,12 @@
     "winston": "1.0.2"
   },
   "devDependencies": {
+    "babel-core": "^6.3.26",
+    "babel-plugin-transform-react-jsx": "^6.3.13",
+    "babel-preset-es2015": "^6.3.13",
     "express-debug": "^1.1.1",
     "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.1",
     "gulp-concat": "^2.6.0",
     "gulp-if": "1.2.5",
     "gulp-minify": "0.0.5",

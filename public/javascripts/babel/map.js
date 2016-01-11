@@ -103,7 +103,6 @@
     map.addLayer(drawnItems);
 
     var drawControl = new L.Control.Draw({
-      //position: 'topright',
       edit: {
           featureGroup: geoJSONLayer
       }

@@ -30,6 +30,10 @@ table {
   table button {
     background: #B27200; }
 
+ul {
+  list-style-type: none;
+  padding: 10px; }
+
 #map {
   overflow: hidden;
   height: 100%;
@@ -63,7 +67,8 @@ table {
 #port-select {
   padding: 5px;
   margin: 5px;
-  height: 40px; }
+  height: 40px;
+  color: black; }
 
 .full-width {
   width: 100%;
@@ -77,6 +82,12 @@ table {
   font-size: 16px;
   position: fixed; }
 
+.good-gps {
+  color: #00ff00 !important; }
+
+.bad-gps {
+  color: #00EDFF !important; }
+
 @media (max-width: 768px) {
   #cursor-location {
     right: 50px;
@@ -84,7 +95,8 @@ table {
   #chat-window {
     left: 0; }
   #port-select {
-    width: 300px; } }
+    width: 300px;
+    height: 40px; } }
 
 @media (min-width: 768px) {
   #map {
@@ -100,14 +112,11 @@ table {
   #chat-window {
     left: 175px; }
   #port-select {
-    width: 150px; }
+    width: 150px;
+    height: 40px; }
   .coordinates {
     width: 120px;
     margin-left: 20px; }
-  .good-gps {
-    background-color: green; }
-  .bad-gps {
-    background-color: red; }
   .side-nav {
     position: fixed;
     top: 50px;

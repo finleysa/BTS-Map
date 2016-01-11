@@ -1,9 +1,9 @@
 var serialport = require('serialport');
 var nmea = require('nmea');
 var mapSockets = require('./mapSockets');
-var initialized = false;
 var io = require('socket.io')();
 var gps = require('../models/gps');
+var initialized = false;
 
 exports.changePort = function(port){
   var port = new serialport.SerialPort(port, {
@@ -26,10 +26,9 @@ exports.gps = function(port){
 
       port.on('data', function(line) {
         try{
+          console.log(line);
           var line = nmea.parse(line);
-
-          var date = new Date();
-          line.datetime = date.getUTCFullYear()+date.getUTCMonth()+date.getUTCDay();
+          line.datetime = new Date().getTime()
           gps.insert(line, function(err){
             if (err){
               logger.error('nmea: ' + err)
