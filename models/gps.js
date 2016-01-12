@@ -18,9 +18,8 @@ GPS.insert = function(line, fn) {
 GPS.findByDate = function(date, fn) {
   try {
     var nmea = global.webmap.db.collection('nmea');
-    nmea.find({date: date}).toArray(function(err, records){
+    nmea.find({date: date, sentence: 'GGA'}).toArray(function(err, records){
       if(!err) {
-        console.log(records)
         fn(records);
       }
     });

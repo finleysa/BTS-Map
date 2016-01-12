@@ -4,13 +4,14 @@ html
     title WebMap
     meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
     link(rel='stylesheet', href='/stylesheets/vendor/normalize.css')
-    link(rel='stylesheet', href='/stylesheets/vendor/jquery-ui.min.css')
     link(rel='stylesheet', href='/stylesheets/vendor/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/vendor/bootstrap-theme.min.css')
-    link(rel='stylesheet', href='/stylesheets/vendor/jquery-ui.theme.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/vendor/leaflet.css')
     link(rel='stylesheet', href='/stylesheets/vendor/leaflet.draw.css')
+    link(rel='stylesheet', href='/stylesheets/vendor/Control.MiniMap.min.css')
+    link(rel='stylesheet', href='/stylesheets/vendor/bootstrap-datepicker.min.css')
+
   body
     #wrapper
       #top-bar
@@ -66,7 +67,7 @@ html
                       li
                         input#center-lon.coordinates(placeholder="Longitude")
                       li
-                        button.btn.btn-info.navbar-btn.coordinates#center-location Center
+                        button.btn.btn-info.navbar-btn.btn-sm.coordinates#center-location Center
               li
                 a(href='javascript:;', data-toggle='collapse', data-target='#drop-marker')
                   <span class="glyphicon glyphicon-pushpin" aria-hidden="true">&nbsp;</span>
@@ -81,7 +82,7 @@ html
                       li
                         input#marker-lon.coordinates(placeholder="Longitude")
                       li
-                        button.btn.btn-info.navbar-btn.coordinates#marker-location Drop
+                        button.btn.btn-info.navbar-btn.btn-sm.coordinates#marker-location Drop
               li
                 a(href='javascript:;', data-toggle='collapse', data-target='#download-gps')
                   <span class="glyphicon glyphicon-download" aria-hidden="true">&nbsp;</span>
@@ -89,19 +90,33 @@ html
                   |  Download GPS
                   i.fa.fa-fw.fa-caret-down
                 ul#download-gps.collapse
-                  input#datepicker(type="text" name="gps-date")
-
+                  #sandbox-container
+                    input#datepicker.form-control(type="text")
+              li
+                a(href='javascript:;', data-toggle='collapse', data-target='#tile-select')
+                  <span class="glyphicon glyphicon-picture" aria-hidden="true">&nbsp;</span>
+                  i.fa.fa-fw.fa-arrows-v
+                  |  Tile Select
+                  i.fa.fa-fw.fa-caret-down
+                ul#tile-select.collapse
+                  form
+                    input#basic(type="radio", name="tile-type", value="basic")
+                    |  Basic
+                    br
+                    input#satellite(type="radio", name="tile-type", value="satellite")
+                    |  Satellite
     block content
 
     script(src='/javascripts/vendor/jquery.min.js')
-    script(src='/javascripts/vendor/jquery-ui.min.js')
     script(src='/javascripts/vendor/placeholder.js')
     script(src='/javascripts/vendor/fastclick.js')
+    script(src='/javascripts/vendor/modernizr.js')
     script(src='/javascripts/vendor/bootstrap.js')
+    script(src='/javascripts/vendor/bootstrap-datepicker.min.js')
     script(src='/javascripts/vendor/leaflet.js')
     script(src='/javascripts/vendor/leaflet.draw.js')
+    script(src='/javascripts/vendor/Control.MiniMap.min.js')
     script(src='/javascripts/vendor/rotatedmarker.js')
     script(src='/javascripts/vendor/numeral.min.js')
     script(src='/javascripts/vendor/socket.io.js')
-    script(src='/javascripts/vendor/modernizr.js')
-    script(src='/javascripts/source/map-min.js')
+    script(src='/javascripts/source/map.js')

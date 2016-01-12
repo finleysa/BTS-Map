@@ -8,6 +8,7 @@ var Cell = require('../models/celltower');
 var MapLayer = require('../models/mapLayer');
 var nmea = require('../bin/nmea');
 var Gps = require('../models/gps');
+var zlib = require('zlib');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -42,24 +43,23 @@ router.get('/getgps', function(req, res, next) {
     date = date.getFullYear() +''+ month +''+ date.getDate();
 
     // create file
-    var filepath = __dirname + '/../gps_logs/' + date + '.txt'
+    var filepath = __dirname + '/../gps_logs/' + date + '.txt.gzip'
     var file = fs.createWriteStream(filepath);
     file.on('error', function(err) {
       logger.error("/getgps : " + err);
     });
     records.forEach(function(v) { file.write(JSON.stringify(v) + "\n"); });
     file.end(function(){
-      console.log("poop")
+      // send file
+      var gzip = zlib.createGzip();
+      var filename = path.basename(filepath);
+      var mimetype = mime.lookup(filepath);
+      res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+      res.setHeader('Content-type', mimetype);
+
+      var filestream = fs.createReadStream(filepath);
+      filestream.pipe(gzip).pipe(res);
     });
-
-    // send file
-    var filename = path.basename(filepath);
-    var mimetype = mime.lookup(filepath);
-    res.setHeader('Content-disposition', 'attachment; filename=' + filename);
-    res.setHeader('Content-type', mimetype);
-
-    var filestream = fs.createReadStream(filepath);
-    filestream.pipe(res);
   });
 });
 

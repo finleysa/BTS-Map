@@ -35,34 +35,26 @@ ul {
   padding: 10px; }
 
 #map {
-  overflow: hidden;
-  height: 100%;
+  overflow: visible;
+  height: 95%;
   width: 100%; }
 
+#basic, #satellite {
+  margin: 10px; }
+
 #datepicker {
-  margin: 5px;
-  width: 100px; }
+  margin-left: 20px;
+  margin-bottom: 5px;
+  width: 100px;
+  font-size: 12px;
+  height: 28px; }
 
 #downloadgps {
-  margin: 5px; }
+  margin: 5px;
+  left: 50px !important; }
 
 #top-bar {
   height: 50px; }
-
-#cursor-location {
-  bottom: 25px; }
-
-#plane-location {
-  bottom: 25px;
-  right: 50px; }
-
-#plane-altitude {
-  top: 75px;
-  right: 50px; }
-
-#plane-speed {
-  top: 95px;
-  right: 50px; }
 
 #chat-window {
   position: relative;
@@ -92,35 +84,47 @@ ul {
 .good-gps {
   color: #00ff00 !important; }
 
+.some-gps {
+  color: yellow; }
+
 .bad-gps {
   color: #00EDFF !important; }
 
 @media (max-width: 768px) {
-  #cursor-location {
-    right: 50px;
-    bottom: 50px; }
   #chat-window {
     left: 0; }
   #port-select {
     width: 300px;
-    height: 40px; } }
+    height: 40px; }
+  #cursor-location {
+    top: 85px;
+    left: 10px; }
+  #plane-location {
+    top: 65px;
+    left: 10px; }
+  #plane-altitude {
+    bottom: 30px;
+    left: 10px; }
+  #plane-speed {
+    bottom: 10px;
+    left: 10px; } }
 
 @media (min-width: 768px) {
-  #map {
-    left: 175px; }
   #wrapper {
     padding-left: 175px; }
   #page-wrapper {
     margin-top: 75px;
     width: 100%;
     display: block; }
-  #cursor-location {
-    left: 200px; }
-  #chat-window {
-    left: 175px; }
   #port-select {
     width: 150px;
     height: 40px; }
+  #cursor-location {
+    top: 65px;
+    left: 195px; }
+  #plane-location {
+    top: 85px;
+    left: 195px; }
   .coordinates {
     width: 120px;
     margin-left: 20px; }
@@ -129,6 +133,7 @@ ul {
     top: 50px;
     left: 175px;
     width: 175px;
+    height: 80%;
     margin-left: -175px;
     border: none;
     border-radius: 0;
@@ -137,7 +142,7 @@ ul {
     bottom: 0;
     overflow-x: hidden;
     padding-bottom: 40px;
-    opacity: .55; }
+    opacity: .75; }
     .side-nav li {
       width: 175px; }
       .side-nav li a:hover,
@@ -149,4 +154,10 @@ ul {
       .side-nav ul li a {
         display: block;
         padding: 10px 15px 10px 38px;
-        text-decoration: none; } }
+        text-decoration: none; }
+  #plane-altitude {
+    top: 65px;
+    right: 70px; }
+  #plane-speed {
+    top: 85px;
+    right: 70px; } }
