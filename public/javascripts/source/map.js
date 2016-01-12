@@ -1,5 +1,3 @@
-'use strict';
-
 (function () {
 
   $(document).ready(initialize);
@@ -20,7 +18,6 @@
   var crumbTimerStarted = false;
   var followingPlaneTimer;
   var followPlaneTimerStarted = false;
-
   var followingPlane = false;
 
   var showbts = false;
@@ -54,6 +51,7 @@
   function initialize() {
     initMap();
     initDraw();
+    addCalendar();
 
     socket.on('GPS', gpsReceived);
     socket.on('AllLayers', layersReceived);
@@ -69,6 +67,7 @@
         socket.emit('ChangePort', portText);
     });
     $('#follow-plane').click(followPlane);
+    $('#datepicker').change(downloadGPS);
 
     map.on('mousemove', function (e) {
       var lat = numeral(e.latlng.lat).format('0.00000');
@@ -82,20 +81,7 @@
 
     map.on('zoomend', getBts);
     map.on('dragend', getBts);
-
     // END MAP EVENTS
-
-    /*
-        if (document.addEventListener) {
-            document.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-            }, false);
-        } else {
-            document.attachEvent('oncontextmenu', function() {
-                window.event.returnValue = false;
-            });
-        }
-        */
   }
 
   function initMap() {
@@ -113,6 +99,13 @@
     });
     map.addControl(drawControl);
   };
+
+  function addCalendar() {
+    $("#datepicker").datepicker({
+      changeMonth: true,
+      changeYear: true
+    });
+  }
 
   function mapObjectAdded(e) {
     var layer = e.layer.toGeoJSON();
@@ -170,6 +163,17 @@
     } catch (err) {
       console.log(err);
     }
+  }
+
+  function downloadGPS() {
+    $('#downloadgps').remove();
+    var date = $('#datepicker').val();
+    var a = $('<a>',{
+      class: 'btn btn-info btn-sm',
+      id: 'downloadgps',
+      text: 'Download',
+      href: '/getgps?date=' + date
+    }).appendTo('#download-gps');
   }
 
   function gpsReceived(sentence) {
@@ -321,14 +325,6 @@
 
     return { lat: latitude, lon: longitude };
   }
-
-  Math.degrees = function (rad) {
-    return rad * (180 / Math.PI);
-  };
-
-  Math.radians = function (deg) {
-    return deg * (Math.PI / 180);
-  };
 
   function createCircle(layer) {
     if (layer.data.properties.layerType == 'circle') {

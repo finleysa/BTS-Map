@@ -3,6 +3,8 @@ var nmea = require('nmea');
 var mapSockets = require('./mapSockets');
 var io = require('socket.io')();
 var gps = require('../models/gps');
+var moment = require("moment");
+
 var initialized = false;
 
 exports.changePort = function(port){
@@ -26,12 +28,13 @@ exports.gps = function(port){
 
       port.on('data', function(line) {
         try{
-          console.log(line);
           var line = nmea.parse(line);
-          line.datetime = new Date().getTime()
-          gps.insert(line, function(err){
+          var date = new Date();
+          line.datetime = date.getTime();
+          line.date = moment().format('L');
+          gps.insert(line, function(err) {
             if (err){
-              logger.error('nmea: ' + err)
+              logger.error('nmea: ' + err);
             } else {
               mapSockets.EmitGPS(line);
             }
@@ -49,7 +52,7 @@ exports.gps = function(port){
   });
 };
 
-exports.GetPorts = function(fn){
+exports.GetPorts = function(fn) {
   serialport.list(function (err, ports) {
     if(err) {
       logger.error('mapSockets: ' + err);
@@ -60,3 +63,7 @@ exports.GetPorts = function(fn){
     }
   });
 }
+
+//exports.GetGPS = function(fn) {
+
+//}

@@ -4,12 +4,13 @@ html
     title WebMap
     meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
     link(rel='stylesheet', href='/stylesheets/vendor/normalize.css')
+    link(rel='stylesheet', href='/stylesheets/vendor/jquery-ui.min.css')
     link(rel='stylesheet', href='/stylesheets/vendor/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/vendor/bootstrap-theme.min.css')
+    link(rel='stylesheet', href='/stylesheets/vendor/jquery-ui.theme.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/vendor/leaflet.css')
     link(rel='stylesheet', href='/stylesheets/vendor/leaflet.draw.css')
-
   body
     #wrapper
       #top-bar
@@ -81,12 +82,19 @@ html
                         input#marker-lon.coordinates(placeholder="Longitude")
                       li
                         button.btn.btn-info.navbar-btn.coordinates#marker-location Drop
-
+              li
+                a(href='javascript:;', data-toggle='collapse', data-target='#download-gps')
+                  <span class="glyphicon glyphicon-download" aria-hidden="true">&nbsp;</span>
+                  i.fa.fa-fw.fa-arrows-v
+                  |  Download GPS
+                  i.fa.fa-fw.fa-caret-down
+                ul#download-gps.collapse
+                  input#datepicker(type="text" name="gps-date")
 
     block content
 
     script(src='/javascripts/vendor/jquery.min.js')
-    script(src='/javascripts/vendor/modernizr.js')
+    script(src='/javascripts/vendor/jquery-ui.min.js')
     script(src='/javascripts/vendor/placeholder.js')
     script(src='/javascripts/vendor/fastclick.js')
     script(src='/javascripts/vendor/bootstrap.js')
@@ -95,4 +103,5 @@ html
     script(src='/javascripts/vendor/rotatedmarker.js')
     script(src='/javascripts/vendor/numeral.min.js')
     script(src='/javascripts/vendor/socket.io.js')
-    script(src='/javascripts/source/map.js')
+    script(src='/javascripts/vendor/modernizr.js')
+    script(src='/javascripts/source/map-min.js')

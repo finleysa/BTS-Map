@@ -11,6 +11,7 @@ exports.SocketServer = function(app, server){
     socket.on('RemoveLayer', exports.RemoveLayer);
     socket.on('RemoveLayers', exports.RemoveLayers);
     socket.on('ChangePort', nmea.changePort);
+    //socket.on('GetGPS', nmea.GetGPS)
   });
 }
 
