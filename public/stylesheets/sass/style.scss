@@ -1,4 +1,3 @@
-@import url(http://fonts.googleapis.com/css?family=Ubuntu);
 $lightBlue: #1986FF;
 $mediumBlue: #0078FF;
 $darkBlue: #0054B2;
@@ -17,10 +16,9 @@ body {
   background-image: linear-gradient(to bottom, #315481, #918e82 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
-  }
+}
 
 h1,h2,h3,h4,h5,p,body,a {
-  font-family: 'Ubuntu', serif;
 }
 
 a {
@@ -68,8 +66,8 @@ ul {
 }
 
 #downloadgps {
-  margin: 5px;
-  left: 50px !important;
+  margin-left: 20px;
+  width: 100px;
 }
 
 #top-bar {
@@ -99,10 +97,20 @@ ul {
 }
 
 .map-text {
-  color: red;
   font-weight: bold;
   font-size: 16px;
   position: fixed;
+  text-shadow: 1px 1px #444;
+  color: yellow;
+  width: inherit;
+}
+
+.locations {
+  width: 250px;
+}
+
+.telemetry {
+  width: 175px;;
 }
 
 .good-gps {
@@ -110,11 +118,27 @@ ul {
 }
 
 .some-gps {
-  color: yellow;
+  color: yellow !important;
 }
 
 .bad-gps {
   color: #00EDFF !important;
+}
+
+.navbar-night {
+  background-image: linear-gradient(to left, #0C0E11, #413F39 100%);
+  border-bottom: 1px solid #FFF;
+  h1,h2,h3,h4,h5,p,body,a {
+    color: white;
+  }
+}
+
+.yellow-text {
+  color: yellow;
+}
+
+.purple-text {
+  color: #FF07B9;
 }
 
 @media(max-width:768px) {
@@ -186,7 +210,7 @@ ul {
     top: 50px;
     left: 175px;
     width: 175px;
-    height: 80%;
+    height: 60%;
     margin-left: -175px;
     border: none;
     border-radius: 0;

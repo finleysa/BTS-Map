@@ -28,3 +28,17 @@ GPS.findByDate = function(date, fn) {
     logger.error('GPS: ' + err);
   }
 }
+
+GPS.findByQuery = function(query, fn) {
+  try {
+    var nmea = global.webmap.db.collection('nmea');
+    nmea.find(query).toArray(function(err, records){
+      if(!err) {
+        fn(records);
+      }
+    });
+  }
+  catch(err) {
+    logger.error('GPS: ' + err);
+  }
+}

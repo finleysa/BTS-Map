@@ -49,6 +49,7 @@
   var aircraftMarker = L.rotatedMarker([0, 0], { icon: planeIcon }).addTo(map);
 
   var Aircraft = {
+    icon: planeIcon,
     latitude: 0,
     longitude: 0,
     heading: 0,
@@ -117,7 +118,7 @@
   };
 
   function initDraggable() {
-    //$('.leaflet-draw').draggable();
+    $('.map-text').draggable();
   }
 
   function ifIsMobile() {
@@ -134,10 +135,14 @@
   }
 
   function changeTile() {
-    if($('#satellite').is(':checked'))
+    if($('#satellite').is(':checked')){
       currentTileLayer.setUrl('maps/sat_tiles/{z0}/{x0}/{x1}/{y0}/{y1}.png');
-    else {
+      $('#top-bar-nav').addClass('navbar-night');
+      $('#top-bar-nav').removeClass('navbar-default');
+    } else {
       currentTileLayer.setUrl('maps/tiles/{z0}/{x0}/{x1}/{y0}/{y1}.png');
+      $('#top-bar-nav').removeClass('navbar-night');
+      $('#top-bar-nav').addClass('navbar-default');
     }
   }
 
@@ -311,6 +316,7 @@
   }
 
   function startPlaneFollowTimer() {
+    map.panTo({ lat: Aircraft.latitude, lon: Aircraft.longitude });
     followingPlaneTimer = setInterval(function () {
       map.panTo({ lat: Aircraft.latitude, lon: Aircraft.longitude });
     }, 5000);

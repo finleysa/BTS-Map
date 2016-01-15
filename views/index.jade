@@ -2,10 +2,12 @@ extends layout
 
 block content
   #map
-  #cursor-location.map-text Cursor:   0.00000 0.00000
-  #plane-location.map-text Aircraft: 0.00000 0.00000
-  #plane-altitude.map-text Altitude: 0 ft 
-  #plane-speed.map-text Speed: 0 knots 
+  .locations
+    #cursor-location.map-text Cursor:   0.00000 0.00000
+    #plane-location.map-text Aircraft: 0.00000 0.00000
+  .telemetry
+    #plane-altitude.map-text Altitude: 0 ft 
+    #plane-speed.map-text Speed: 0 knots 
 
   //
     #chat-window
